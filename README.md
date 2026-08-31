@@ -1,5 +1,8 @@
 # ICARUS-LEO
 
+🚧 **Work in Progress**
+This project is currently under active development.
+
 This repository accompanies the paper *"Understanding In-Network Caching for LEO
 Satellite Networks: A Physical-Layer Perspective"* by G. Campobello and M. Amadeo
 (submitted to Computer Communications, 2026). The paper investigates in-network
@@ -8,8 +11,6 @@ caching for LEO satellite networks from a physical-layer perspective and present
 (Saino, Psaras and Pavlou, SIMUTOOLS 2014) to content delivery over LEO satellite
 constellations.
 
-🚧 **Work in Progress**
-This project is currently under active development.
 
 ## Contents
 
