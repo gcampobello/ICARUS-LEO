@@ -15,11 +15,11 @@ This project is currently under active development.
 This repository provides documentation, worked examples and validation material:
 
 - **Documents**
-  - **Architecture (PDF)** — what the simulator does and its architecture.
-  - **[User guide](docs/ICARUS-LEO-UserGuide.md)** — how to use the simulator.
+  - **Architecture** — what the simulator does and its architecture.
+  - **User guide** — how to use the simulator.
 - **Examples** — worked examples, each with the exact configuration and the
   resulting interactive session viewer.
-- **[Validation Material](docs/validation/Validation.md)** — the simulator's output
+- **Validation Material** — the simulator's output
   compared against independent analytical models, as reported in the paper.
 
 ## Accessing the simulator
