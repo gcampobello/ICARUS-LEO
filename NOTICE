@@ -1,0 +1,16 @@
+ICARUS-LEO companion repository. Licensing by component:
+
+Software and interactive tools
+  ICARUS-LEO is a fork of Icarus (https://github.com/icarus-sim/icarus), licensed
+  under GPL-2.0-or-later. The simulator engine ICARUS-LEO is not included in this repository.
+  The config builder and the session viewers reported here are licensed under the MIT Licence
+  (see LICENSE). Copyright (c) 2026 Giuseppe Campobello.
+
+Documentation and text
+  This README, the validation write-up, the user guide and the architecture
+  document are licensed under Creative Commons Attribution 4.0 International
+  (CC BY 4.0), https://creativecommons.org/licenses/by/4.0/.
+
+Figures
+  The figures are reproduced from the accompanying paper and follow its copyright
+  and the publisher's sharing policy. They are not covered by the licences above.
