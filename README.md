@@ -5,7 +5,7 @@ This project is currently under active development.
 
 This repository accompanies the paper *"Understanding In-Network Caching for LEO
 Satellite Networks: A Physical-Layer Perspective"* by G. Campobello and M. Amadeo
-(submitted to Computer Communications, 2026). The paper investigates in-network
+(submitted to Computer Networks, 2026). The paper investigates in-network
 caching for LEO satellite networks from a physical-layer perspective and presents
 **ICARUS-LEO**, a simulator that extends the [Icarus](https://github.com/icarus-sim/icarus) in-network-caching framework
 (Saino, Psaras and Pavlou, SIMUTOOLS 2014) to content delivery over LEO satellite
