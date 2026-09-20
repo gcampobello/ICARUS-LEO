@@ -18,7 +18,7 @@ This repository provides documentation, worked examples and validation material:
 
 - **Documents**
   - **Architecture** [`docs/ICARUS-LEO-Architecture.pdf`] — what the simulator does and its architecture. 
-  - **User guide** [`docs/ICARUS-LEO-UserGuide.md`] — how to use the simulator. 
+  - [**User guide**](docs/ICARUS-LEO-UserGuide.md) — how to use the simulator. 
 - **Examples** — worked examples, each with the exact configuration and the
   resulting interactive session viewer.
 - **Validation Material** — the simulator's output
