@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use ICARUS-LEO, please cite the following paper."
+title: "ICARUS-LEO"
+authors:
+  - family-names: "Campobello"
+    given-names: "Giuseppe"
+  - family-names: "Amadeo"
+    given-names: "Marica"
+year: 2026
+url: "https://github.com/<user>/<repo>"
+preferred-citation:
+  type: article
+  title: "Understanding In-Network Caching for LEO Satellite Networks: A Physical-Layer Perspective"
+  authors:
+    - family-names: "Campobello"
+      given-names: "Giuseppe"
+    - family-names: "Amadeo"
+      given-names: "Marica"
+  journal: "Computer Networks"
+  year: 2026
+  notes: "Submitted for publication."
