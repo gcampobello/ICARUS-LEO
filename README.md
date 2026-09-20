@@ -17,7 +17,7 @@ constellations.
 This repository provides documentation, worked examples and validation material:
 
 - **Documents**
-  - **Architecture** [docs/ICARUS-LEO-Architecture.pdf]— what the simulator does and its architecture (in docs/ICARUS-LEO-Architecture.pdf) 
+  - **Architecture** (docs/ICARUS-LEO-Architecture.pdf)— what the simulator does and its architecture (in docs/ICARUS-LEO-Architecture.pdf) 
   - **User guide** — how to use the simulator (in docs/ICARUS-LEO-UserGuide.md) 
 - **Examples** — worked examples, each with the exact configuration and the
   resulting interactive session viewer.
