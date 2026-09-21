@@ -29,7 +29,7 @@ constellations presented in the accompanying paper. It covers three things:
 
 ## 1. How access works
 
-1. **Prepare** your scenario in the config builder, a single HTML page that
+1. **Prepare** your scenario in the [config builder](https://gcampobello.github.io/ICARUS-LEO/config_builder.html), a single HTML page that
    runs in your browser.
 2. **Download** the configuration file that the builder generates: a small
    Python file (`.py`) describing one experiment or a sweep of experiments.
