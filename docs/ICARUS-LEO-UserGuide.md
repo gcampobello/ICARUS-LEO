@@ -104,7 +104,6 @@ experiment['workload'] = {
 experiment['cache_placement'] = {
         'name': 'UNIFORM',
         'network_cache': 0.05,
-        'seed': 42,
     }
 experiment['content_placement'] = {
         'name': 'UNIFORM_CHUNKED',
@@ -116,8 +115,7 @@ experiment['cache_policy'] = {
 experiment['strategy'] = {
         'name': 'RETRY_LCD_LOSSY',
         'max_retries': 2,
-        'retry_timeout_ms': 130.0,
-        'link_rate_bps': 1.5e6,
+        'retry_timeout_ms': 300.0,
         'content_size_bytes': 8192,
         'loss_model': {
             'name': 'BERNOULLI',
@@ -131,8 +129,8 @@ experiment['desc'] = 'My experiment'
 EXPERIMENT_QUEUE.append(experiment)
 ```
 
-The file contains parameters only. Its header also lists the commands we use to
-run it; you do not need to run them yourself.
+The file contains parameters only. Its header also lists the commands used to
+run it with the simulator engine; you do not need to run them yourself.
 
 ## 4. The builder at a glance
 
@@ -184,20 +182,19 @@ seeds, sweep a seed, as described in [Section 6](#6-parametric-sweeps).
 
 #### Constellation
 
-The `name` field selects the constellation. Three families are available.
+The `name` field selects the constellation. Two families are available.
 
 | Family | Names | Description |
 |---|---|---|
 | Static | `LEO_IRIDIUM`, `LEO_STARLINK_MINI`, `LEO` (custom) | Satellite positions are computed analytically and the topology does not change during the run. |
 | Dynamic | `LEO_DYN_IRIDIUM`, `LEO_DYN_STARLINK_MINI`, `LEO_DYN` (custom) | Satellites move. The topology is updated through a sequence of precomputed snapshots, and receivers and ground stations experience handovers. |
-| TLE / SGP4 | `LEO_IRIDIUM_TLE`, `LEO_STARLINK_MINI_TLE`, `LEO_TLE` (custom) | Satellite positions are obtained by propagating orbital elements with the SGP4 model to the instant given in `propagation_time`. |
 
 `LEO_IRIDIUM` is an Iridium-like constellation of 66 satellites in 6 near-polar
 planes of 11 satellites, at 780 km altitude and 86.4° inclination.
 `LEO_STARLINK_MINI` is a reduced Starlink-like shell at 550 km.
 
-The custom entries (`LEO`, `LEO_DYN`, `LEO_TLE`) show a *Custom* sub-section
-where you define the constellation yourself:
+The custom entries (`LEO`, `LEO_DYN`) show a *Custom Walker constellation*
+sub-section where you define the constellation yourself:
 
 | Field | Default | Meaning |
 |---|---|---|
@@ -206,6 +203,8 @@ where you define the constellation yourself:
 | `altitude_km` | 780 | Orbital altitude, in km. |
 | `inclination_deg` | 86.4 | Orbital inclination, in degrees. |
 | `isl_type` | `plus_grid` | Inter-satellite links (ISLs). `plus_grid`: each satellite is linked to its neighbours in the same plane and in the adjacent planes. `intra_only`: links within the same plane only. |
+| Walker pattern | Delta (360°) | How the orbital planes are spread in right ascension. *Delta* spreads them over 360° (for example Starlink), *Star* over 180° (for example Iridium). Written to the file as `raan_span_deg` only when *Star* is chosen. |
+| `phase_offset_deg` | 0.0 | Phase offset, in degrees, between satellites in adjacent planes (Walker phasing, F × 360 / total number of satellites; 10.909 for Iridium). |
 
 `seed` (default 42) initialises the random elements of the topology.
 
@@ -247,7 +246,7 @@ These fields appear for the `LEO_DYN_*` constellations.
 
 | Field | Default | Meaning |
 |---|---|---|
-| `n_snapshots` | 10 | Number of topology snapshots used to follow the satellites' motion. More snapshots give a finer time resolution at a higher computational cost. Next to the field, the builder suggests a minimum value, chosen so that the interval between snapshots stays well below the time a satellite remains visible from the ground. |
+| `n_snapshots` | 100 | Number of topology snapshots used to follow the satellites' motion. The snapshots cover one orbital period, which the simulation repeats cyclically. More snapshots give a finer time resolution at a higher computational cost. Next to the field, the builder suggests a minimum value, chosen so that the interval between snapshots stays well below the time a satellite remains visible from the ground; it depends on the constellation and on `min_elevation_deg`, not on the length of the workload. |
 | `disable_handover` | off | Removes all handover effects. Equivalent to setting the blackout duration to zero. |
 | `handover_source` | `analytic` | How handover instants are determined. `analytic`: a closed-form schedule derived from the constellation geometry. `snapshot`: the serving satellite is re-evaluated at each snapshot. |
 | `handover_period_s` | empty | `analytic` only. Forces a handover every N seconds instead of the geometric schedule. Leave empty to use the geometry. |
@@ -258,27 +257,20 @@ These fields appear for the `LEO_DYN_*` constellations.
 
 A request or data packet transmitted during a blackout is lost.
 
-#### TLE / SGP4 topologies
-
-For the `*_TLE` constellations, `propagation_time` sets the instant, in UTC, at
-which satellite positions are computed. It is written as a tuple
-`(year, month, day, hour, minute, second)`, for example
-`(2026, 3, 31, 12, 0, 0)`.
-
 ### 5.3 Workload
 
 The workload describes the content catalogue and the stream of requests.
 
 | Field | Default | Meaning |
 |---|---|---|
-| `name` | `STATIONARY_CHUNKED` | `STATIONARY_CHUNKED`: each content is split into chunks, and each chunk is requested and delivered as a separate Data packet, as in NDN. `STATIONARY`: the original Icarus workload, one request per content. |
+| `name` | `STATIONARY_CHUNKED` | `STATIONARY_CHUNKED`: each content is split into chunks, and each chunk is requested and delivered as a separate Data packet, as in ICN. `STATIONARY`: the original Icarus workload, one request per content. |
 | `n_contents` | 100000 | Size of the content catalogue. |
 | `n_chunks` | 4 | Chunks per content (`STATIONARY_CHUNKED` only). |
 | `alpha` | 1.0 | Exponent of the Zipf popularity distribution. Larger values concentrate requests on fewer contents. |
 | `n_warmup` | 5000 | Content requests issued before measurement starts, to fill the caches. |
 | `n_measured` | 20000 | Content requests that are measured. |
 | `rate` | 1.0 | Mean content request rate, in requests per second. |
-| `chunk_size_bytes` | 8192 | Size of a chunk, that is, of an NDN Data packet, in bytes. Written to the file as `content_size_bytes` in the strategy. |
+| `chunk_size_bytes` | 8192 | Size of a chunk, that is, of an ICN Data packet, in bytes. Written to the file as `content_size_bytes` in the strategy. |
 | `seed` | 42 | Seed for the request stream. |
 
 In the results, a **session** is the request and delivery of one chunk. An
@@ -289,17 +281,16 @@ experiment with the chunked workload therefore records `n_measured` ×
 
 | Field | Default | Meaning |
 |---|---|---|
-| `cache_placement.name` | `UNIFORM` | How the total cache budget is distributed over the network nodes: `UNIFORM`, `DEGREE`, `BETWEENNESS_CENTRALITY`, `CONSOLIDATED` or `RANDOM`. |
-| `network_cache` | 0.05 | Total cache budget, as a fraction of the catalogue (`n_contents`). |
-| `cache_placement.seed` | 42 | Seed for the `RANDOM` placement. |
+| `cache_placement.name` | `UNIFORM` | How the total cache budget is distributed over the satellites: `UNIFORM`, `DEGREE`, `BETWEENNESS_CENTRALITY` or `CONSOLIDATED`. |
+| `network_cache` | 0.05 | Total number of cache slots, as a multiple of the catalogue size (`n_contents`). Each slot holds one chunk, so with the chunked workload the fraction of the catalogue that fits in the caches is `network_cache` / `n_chunks` (1.25% with the defaults). |
 | `content_placement.name` | `UNIFORM_CHUNKED` | How contents are assigned to the sources. `UNIFORM_CHUNKED` is intended for the chunked workload; `UNIFORM` and `WEIGHTED` are the original Icarus placements. |
 | `content_placement.seed` | 42 | Seed for the content placement. |
 | `cache_policy.name` | `LRU` | Replacement policy of each cache: `LRU`, `FIFO`, `RAND`, `CLIMB`, `IN_CACHE_LFU`, `PERFECT_LFU`, `SLRU` or `NULL`. |
 
-Below `network_cache` the builder estimates the cache size per node. If the
-budget would give less than one unit per node, the estimate is shown in red: the
-simulator would round every cache up to one unit, which distorts the
-experiment. Increase `n_contents` or `network_cache` until the warning
+Caches are placed on satellites only. Below `network_cache` the builder
+estimates the cache size per satellite. If the budget would give less than one
+unit per satellite, the estimate is shown in red: the simulator would round
+every cache up to one unit, which distorts the experiment. Increase `n_contents` or `network_cache` until the warning
 disappears.
 
 ### 5.5 Strategy
@@ -308,10 +299,9 @@ The strategy decides where content is cached along the delivery path.
 
 | Group | Names | Notes |
 |---|---|---|
-| Retry | `RETRY_LCE_LOSSY`, `RETRY_LCD_LOSSY`, `RETRY_PROB_CACHE_LOSSY`, `RETRY_CL4M_LOSSY` | LCE, LCD, ProbCache and CL4M, with the loss model applied on every hop and NDN-style retransmission of unanswered requests. These are the strategies used in the paper. |
+| Retry | `RETRY_LCE_LOSSY`, `RETRY_LCD_LOSSY`, `RETRY_PROB_CACHE_LOSSY`, `RETRY_CL4M_LOSSY` | LCE, LCD, ProbCache and CL4M, with the loss model applied on every hop and retransmission of unanswered requests. These are the strategies used in the paper. |
 | Legacy / no-loss | `LCD`, `LCE`, `NO_CACHE`, `EDGE`, `PARTITION`, `NRR`, `RAND_BERNOULLI`, `RAND_CHOICE` | Original Icarus strategies. |
 | Hash-routing | `HASHROUTING`, `HR_EDGE_CACHE`, `HR_ON_PATH`, `HR_CLUSTER`, `HR_SYMM`, `HR_ASYMM`, `HR_MULTICAST`, `HR_HYBRID_AM`, `HR_HYBRID_SM` | Original Icarus hash-routing strategies. |
-| LEO / fragment | `FRAGMENT_LEO` | A lossless baseline. |
 
 Only the `RETRY_*` strategies apply the loss model, the handover blackouts and
 the topology updates of the dynamic constellations. Use them for any scenario
@@ -323,16 +313,14 @@ as lossless baselines on static constellations.
 | Field | Default | Meaning |
 |---|---|---|
 | `max_retries` | 2 | Maximum number of retransmissions of a request. `0` gives a single attempt. |
-| `retry_timeout_ms` | 130.0 | Time, in ms, after which an unanswered request is retransmitted. |
-| `link_rate_bps` | 1.5e6 | Link rate, in bit/s, passed to the retransmission strategy. |
+| `retry_timeout_ms` | 300.0 | Time, in ms, after which an unanswered request is retransmitted. Keep it larger than the round-trip time, otherwise requests are retransmitted even when nothing was lost. |
 
 **ProbCache parameter** (`RETRY_PROB_CACHE_LOSSY` only): `t_tw`, the time
 window parameter of ProbCache (default 10).
 
-**Serialisation** (`serialization`): when `True` (default), the transmission
-time of each packet on each link, computed from the packet size and the link
-rate, is included in the latency. `False` disables it; `both (sweep)` runs the
-experiment in both ways.
+**Latency.** The latency of each hop always includes the propagation delay and
+the transmission time of the packet, that is, its size in bits divided by the
+link rate set in *Topology*. Queueing delays are not modelled.
 
 ### 5.6 Loss model
 
@@ -352,7 +340,7 @@ Bit-error rates (BERs) are per bit: a packet of L bits is lost with probability
 differently, because of their different sizes.
 
 Choose the model in `name`; its parameters appear below it. `seed` (default 42)
-initialises the loss process.
+initialises the loss process; with `COMPOSITE`, each sub-model has its own seed.
 
 **`NONE`.** No channel loss. With a dynamic constellation and an active
 handover, the builder writes a Bernoulli model with all BERs set to zero
@@ -424,9 +412,6 @@ placement, the content placement, the cache policy and the loss model have an
 example `["RETRY_LCE_LOSSY", "RETRY_LCD_LOSSY"]`. A valid array there overrides
 the selection above it.
 
-**Serialisation.** Choose `both (sweep)` to run with and without serialisation
-delay.
-
 **Several swept fields** produce every combination of their values. For
 example, sweeping four strategies and three workload seeds
 
@@ -451,8 +436,7 @@ need to be discussed with us before they can be accepted.
 ## 7. Seeds and reproducibility
 
 Several components draw random numbers: the topology, the receiver placement,
-the request stream, the content placement, the cache placement and the loss
-model. Each has its own seed field, set to 42 by default.
+the request stream, the content placement and the loss model. Each has its own seed field, set to 42 by default.
 
 If a seed is left empty, that component is initialised from system entropy and
 the run can no longer be reproduced. The builder then shows a warning above the
@@ -466,9 +450,15 @@ experiment or sweep, and fills in the form with its values. You can then change
 any field and download the modified file from *Output*. This is the simplest
 way to prepare variants of a scenario.
 
-Only files generated by the builder can be loaded. Files edited by hand may not
-be read correctly. After loading, check the preview in *Output* before
-downloading.
+Only files generated by the builder can be loaded, including those generated by
+earlier versions. Files edited by hand may not be read correctly.
+
+After loading, a message next to the *Load* button reports the outcome. If some
+values in the file cannot be restored, for example an option that the builder
+no longer offers, the message turns orange and lists them: the configuration you
+download will differ from the file on those points. Parameters that have no
+effect in the current version are ignored and listed in the message as well.
+Check the preview in *Output* before downloading.
 
 ## 9. Sending your request
 
@@ -540,11 +530,12 @@ be produced if `SESSION_LOG` was selected in the configuration.
 |---|---|---|
 | A field outlined in red, *not a valid number* | Letters, spaces or a comma decimal separator in a numeric field. | Use plain numbers with a full stop, for example `0.8` or `1e-6`. |
 | *malformed JSON array* | A sweep array that is not valid JSON, for example with single quotes or a missing bracket. | Use square brackets, commas, and double quotes for names: `["LRU", "FIFO"]`. |
-| Red cache estimate under `network_cache` | Less than one cache unit per node. | Increase `n_contents` or `network_cache`. |
+| Red cache estimate under `network_cache` | Less than one cache unit per satellite. | Increase `n_contents` or `network_cache`. |
 | Warning listing empty seeds (*Output* tab) | One or more seed fields are empty. | Fill them in, unless an irreproducible run is intended. |
 | A note that `NONE` has been replaced by a lossless Bernoulli | `NONE` selected with an active handover on a dynamic constellation. | Nothing: this is intended (see [Section 5.6](#56-loss-model)). |
 | Banner in warning style | The sweep has more than 50 experiments. | Consider reducing it, or discuss it with us first. |
 | No viewer in the output | `SESSION_LOG` was not selected. | Tick `SESSION_LOG` and send the request again. |
+| Orange message after loading a file (*Load* tab) | Some values in the file cannot be restored, for example an option the builder no longer offers. | Check the listed items and set them again before downloading. |
 
 ---
 
