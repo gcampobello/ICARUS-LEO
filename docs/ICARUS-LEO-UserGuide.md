@@ -52,7 +52,7 @@ ways:
 - from the project's GitHub Pages site, at
   [`https://gcampobello.github.io/ICARUS-LEO/config_builder.html`](https://gcampobello.github.io/ICARUS-LEO/config_builder.html), which
   publishes the repository's `docs/` folder;
-- by downloading `docs/config_builder.html` from the repository and opening it
+- by downloading [`docs/config_builder.html`](https://github.com/gcampobello/ICARUS-LEO/blob/main/docs/config_builder.html) from the repository and opening it
   locally in any recent web browser.
 
 The builder works entirely offline. It does not send data anywhere: the
