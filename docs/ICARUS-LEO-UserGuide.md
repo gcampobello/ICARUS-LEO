@@ -8,7 +8,7 @@ This guide explains how to configure simulations with **ICARUS-LEO**, the
 simulator of Information-Centric Networking (ICN) caching over LEO satellite
 constellations presented in the accompanying paper. It covers three things:
 
-1. how to describe your scenario with the **config builder** and obtain a
+1. how to describe your scenario with the [**config builder**](https://gcampobello.github.io/ICARUS-LEO/config_builder.html) and obtain a
    configuration file;
 2. how to send that file to us for execution;
 3. what you receive back and how to read it.
@@ -50,7 +50,7 @@ The config builder is a single HTML page. You can open it in either of two
 ways:
 
 - from the project's GitHub Pages site, at
-  `https://gcampobello.github.io/ICARUS-LEO/config_builder.html`, which
+  [`https://gcampobello.github.io/ICARUS-LEO/config_builder.html`](https://gcampobello.github.io/ICARUS-LEO/config_builder.html), which
   publishes the repository's `docs/` folder;
 - by downloading `docs/config_builder.html` from the repository and opening it
   locally in any recent web browser.
