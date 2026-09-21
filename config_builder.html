@@ -1,0 +1,3103 @@
+<!DOCTYPE html>
+<!-- ICARUS-LEO config builder. Licensed under GPL-2.0-or-later. Generated file: do not edit. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ICARUS-LEO config builder</title>
+<style>
+
+  :root {
+
+    --bg: #f5f5f5;
+    --bg-deep: #eeeeee;
+    --panel: #ffffff;
+    --paper-tint: #fafafa;
+
+    --ink: #212121;
+    --ink-soft: #424242;
+    --ink-mute: #757575;
+
+    --rule: #e0e0e0;
+    --rule-soft: #eeeeee;
+
+    --vm: #1565C0;
+    --vm-deep: #0D47A1;
+    --vm-soft: #E3F2FD;
+
+    --ol: #388E3C;
+    --ol-deep: #2E7D32;
+    --ol-soft: #E8F5E9;
+
+    --steel: #6b6357;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.45;
+    min-height: 100vh;
+  }
+  .wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 32px 80px;
+  }
+  header {
+    background: var(--vm);
+    color: #fff;
+    padding: 14px 24px;
+    margin: -24px -32px 24px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  header h1 {
+    font-size: 20px;
+    margin: 0 0 3px;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: #fff;
+  }
+  header .sub {
+    font-size: 13px;
+    color: #fff;
+    max-width: 800px;
+  }
+  header .sub code {
+    font-size: 12px;
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    color: #fff;
+  }
+
+  .sweep-banner {
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 4px;
+    border-left: 4px solid #FFD54F;
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    color: #fff;
+    display: flex;
+    gap: 18px;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+  .sweep-banner .exp-count {
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .sweep-banner .axes-summary {
+    opacity: 0.85;
+    font-size: 12px;
+  }
+  .sweep-banner.sweep-active {
+    border-left-color: #FFA726;
+    background: rgba(255,167,38,0.20);
+  }
+  .sweep-banner.sweep-error {
+    border-left-color: #EF5350;
+    background: rgba(239,83,80,0.20);
+  }
+  .sweep-banner.sweep-warning {
+    border-left-color: #FFB74D;
+    background: rgba(255,183,77,0.25);
+  }
+
+  label.field input.sweep-active {
+    background: #FFF8E1 !important;
+    border-color: #FFA726 !important;
+    box-shadow: 0 0 0 1px #FFA726 inset;
+  }
+  label.field input.sweep-error {
+    background: #FFEBEE !important;
+    border-color: #EF5350 !important;
+    box-shadow: 0 0 0 1px #EF5350 inset;
+  }
+  .sweep-error-msg {
+    color: #C62828;
+    font-size: 11px;
+    margin-top: 2px;
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  }
+
+  label.field input.sweepable {
+    background: #BBDEFB !important;
+  }
+
+  .layout {
+    display: block;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .tab {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 10px 18px;
+    border: 1px solid var(--rule);
+    border-bottom: none;
+    background: var(--bg-deep);
+    color: var(--ink-soft);
+    cursor: pointer;
+    margin-right: -1px;
+    margin-bottom: -1px;
+    border-radius: 4px 4px 0 0;
+    user-select: none;
+    letter-spacing: 0;
+    font-weight: 500;
+    transition: background 80ms, color 80ms;
+  }
+  .tab:hover {
+    background: var(--vm-soft);
+    color: var(--vm-deep);
+  }
+  .tab.active {
+    background: var(--panel);
+    color: var(--vm-deep);
+    font-weight: 600;
+    border-color: var(--rule);
+    border-bottom: 1px solid var(--panel);
+    position: relative;
+    z-index: 2;
+  }
+  .tab.active::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px; right: -1px;
+    height: 3px;
+    background: var(--vm);
+  }
+  .tab-counter {
+    color: var(--ink-mute);
+    margin-left: 5px;
+    font-weight: 400;
+    font-size: 12px;
+  }
+
+  .tab.tab-load {
+    margin-left: auto;
+    background: #387CC9;
+    color: #fff;
+    border-color: var(--vm-deep);
+    font-weight: 600;
+  }
+  .tab.tab-load:hover {
+    background: var(--vm);
+    color: #fff;
+  }
+  .tab.tab-load.active {
+    background: var(--vm);
+    color: #fff;
+    border-color: var(--vm-deep);
+  }
+  .tab.tab-load.active::before {
+    background: #fff;
+  }
+  .tab.tab-output {
+    background: var(--vm);
+    color: #fff;
+    border-color: var(--vm-deep);
+    font-weight: 600;
+  }
+  .tab.tab-output:hover {
+    background: var(--vm-deep);
+    color: #fff;
+  }
+  .tab.tab-output.active {
+    background: var(--vm-deep);
+    color: #fff;
+    border-color: var(--vm-deep);
+  }
+  .tab.tab-output.active::before {
+    background: #fff;
+  }
+  .tab-counter {
+    color: var(--ink-mute);
+    margin-left: 5px;
+    font-weight: 400;
+    font-size: 10.5px;
+  }
+
+  .tab-panels {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-top: none;
+    border-radius: 0 4px 4px 4px;
+    padding: 22px 26px 24px;
+    min-height: 480px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .panel-title {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--vm-deep);
+    margin: 0 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .panel-title::before {
+
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 18px;
+    background: var(--vm);
+    border-radius: 1px;
+    flex-shrink: 0;
+  }
+  .panel-title .badge {
+    margin-left: auto;
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 11px;
+    color: #fff;
+    background: var(--vm);
+    padding: 3px 9px;
+    border-radius: 12px;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 500;
+  }
+  .panel-title .badge.olive {
+    background: var(--ol);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 18px;
+  }
+  .grid.three { grid-template-columns: 1fr 1fr 1fr; }
+  .grid .full { grid-column: 1 / -1; }
+
+  label.field {
+    display: flex;
+    flex-direction: column;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    gap: 4px;
+  }
+  label.field > span.lbl {
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 12px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  label.field > span.lbl .hint {
+    color: var(--ink-mute);
+    font-family: inherit;
+    font-weight: 400;
+  }
+
+  label.field > span.lbl .hint.hint-caution { color: #f57c00; }
+  label.field > span.lbl .hint.hint-warn { color: #e65100; }
+  label.field > span.lbl .hint.hint-error { color: #c62828; font-weight: 500; }
+  label.field input[type="text"],
+  label.field input[type="number"],
+  label.field select {
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 6px 8px;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    background: var(--panel);
+    color: var(--ink);
+    width: 100%;
+    transition: border-color 80ms, box-shadow 80ms;
+  }
+  label.field select { padding-right: 22px; }
+  label.field input:hover,
+  label.field select:hover {
+    border-color: var(--ink-mute);
+  }
+  label.field input:focus,
+  label.field select:focus {
+    outline: none;
+    border-color: var(--vm);
+    box-shadow: 0 0 0 2px var(--vm-soft);
+  }
+
+  label.field.checkbox-row {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+  label.field.checkbox-row > input[type="checkbox"] {
+    flex: 0 0 auto;
+    margin: 0;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+  label.field.checkbox-row > span.lbl {
+    flex: 1 1 auto;
+  }
+
+  label.field input:disabled,
+  label.field select:disabled {
+    background: var(--bg-deep);
+    color: var(--ink-mute);
+    cursor: not-allowed;
+    opacity: 0.75;
+  }
+  label.field.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .checks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px 14px;
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 12.5px;
+  }
+  .checks label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    background: var(--panel);
+    transition: background 80ms, border-color 80ms;
+  }
+  .checks label:hover {
+    background: var(--vm-soft);
+    border-color: var(--vm);
+  }
+  .checks input[type="checkbox"] {
+    accent-color: var(--vm);
+    cursor: pointer;
+  }
+
+  .tab-panel .sub {
+    border-left: 3px solid var(--vm);
+    padding: 12px 0 8px 16px;
+    margin-top: 16px;
+    background: var(--vm-soft);
+    border-radius: 0 3px 3px 0;
+  }
+  .tab-panel .sub h3 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--vm-deep);
+    margin: 0 0 10px;
+    text-transform: none;
+  }
+  .tab-panel .sub h3 .hint {
+    color: var(--ink-mute);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 12px;
+  }
+
+  .tab-panel .sub.sub-olive {
+    border-left-color: var(--ol);
+    background: var(--ol-soft);
+  }
+  .tab-panel .sub.sub-olive h3 {
+    color: var(--ol-deep);
+  }
+  .hidden { display: none !important; }
+
+  #output, #load_preview {
+    width: 100%;
+    height: 540px;
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    line-height: 1.5;
+    background: var(--paper-tint);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 14px 16px;
+    resize: vertical;
+    white-space: pre;
+    margin-bottom: 12px;
+  }
+  #output:focus, #load_preview:focus {
+    outline: none;
+    border-color: var(--vm);
+    box-shadow: 0 0 0 2px var(--vm-soft);
+  }
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  button {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 9px 22px;
+    border: none;
+    background: var(--vm);
+    color: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    transition: background 80ms, box-shadow 80ms;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  button:hover {
+    background: var(--vm-deep);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+  }
+  button:active {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+  button.secondary {
+    background: var(--panel);
+    color: var(--vm);
+    border: 1px solid var(--rule);
+    box-shadow: none;
+  }
+  button.secondary:hover {
+    background: var(--vm-soft);
+    color: var(--vm-deep);
+  }
+  .note {
+    font-size: 12.5px;
+    color: var(--ink-mute);
+    margin: 8px 0 0;
+  }
+  .note code {
+    color: var(--vm-deep);
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 12px;
+  }
+
+  .help {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+    line-height: 1.5;
+  }
+  .help code {
+    color: var(--vm-deep);
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 12px;
+  }
+  .help em {
+    color: var(--vm-deep);
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  footer {
+    margin-top: 36px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+    font-size: 12px;
+    color: var(--ink-mute);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>ICARUS-LEO config builder</h1>
+  <div class="sub">
+    Generates <code>config_*.py</code> files for the ICARUS-LEO
+    simulator, an extension of the Icarus framework. Use a JSON array
+    like <code>[1e-6, 5e-6]</code> in any numeric or text field
+    to sweep that parameter; multiple arrays produce nested loops.
+  </div>
+  <div class="sweep-banner" id="sweep_banner">
+    <span class="exp-count" id="exp_count">1 experiment</span>
+    <span class="axes-summary" id="axes_summary"></span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <main>
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-tab="experiment">Experiment</div>
+      <div class="tab" data-tab="topology">Topology</div>
+      <div class="tab" data-tab="workload">Workload</div>
+      <div class="tab" data-tab="cache">Cache</div>
+      <div class="tab" data-tab="strategy">Strategy</div>
+      <div class="tab" data-tab="loss">Loss model</div>
+      <div class="tab" data-tab="collectors">Collectors</div>
+      <div class="tab tab-load" data-tab="load">◂ Load</div>
+      <div class="tab tab-output" data-tab="output">Output ▸</div>
+    </div>
+
+    <div class="tab-panels">
+
+      <div class="tab-panel active" data-panel="experiment">
+        <h2 class="panel-title">Experiment metadata</h2>
+        <p class="help">
+          Top-level settings of the generated config file. The
+          <em>filename</em> is used both for the file you download and
+          inside the generated docstring as part of the suggested
+          <code>icarus run</code> command.
+        </p>
+        <div class="grid">
+          <label class="field full">
+            <span class="lbl">filename
+              <span class="hint">(name of the file to generate)</span>
+            </span>
+            <input type="text" id="filename" value="config_my_experiment.py">
+          </label>
+          <label class="field full">
+            <span class="lbl">desc
+              <span class="hint">(experiment description, ends up in
+              <code>experiment['desc']</code>)</span>
+            </span>
+            <input type="text" id="desc" value="My experiment">
+          </label>
+          <label class="field">
+            <span class="lbl">LOG_LEVEL</span>
+            <select id="log_level">
+              <option>INFO</option>
+              <option>DEBUG</option>
+              <option>WARNING</option>
+              <option>ERROR</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="lbl">PARALLEL_EXECUTION</span>
+            <select id="parallel">
+              <option value="True">True</option>
+              <option value="False">False</option>
+            </select>
+          </label>
+          <label class="field" id="nproc_field">
+            <span class="lbl">N_PROCESSES</span>
+            <input type="number" id="n_processes" value="4" min="1" max="64">
+          </label>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="collectors">
+        <h2 class="panel-title">DATA_COLLECTORS</h2>
+        <p class="help">
+          Select at least one. <code>SESSION_LOG</code> is required if
+          you want to generate the interactive HTML viewer.
+        </p>
+        <div class="checks" id="collectors">
+          <label><input type="checkbox" value="CACHE_HIT_RATIO" checked> CACHE_HIT_RATIO</label>
+          <label><input type="checkbox" value="LATENCY" checked> LATENCY</label>
+          <label><input type="checkbox" value="CHUNK_LEVEL" checked> CHUNK_LEVEL</label>
+          <label><input type="checkbox" value="LEO_METRICS" checked> LEO_METRICS</label>
+          <label><input type="checkbox" value="LINK_LOAD"> LINK_LOAD</label>
+          <label><input type="checkbox" value="PATH_STRETCH"> PATH_STRETCH</label>
+          <label><input type="checkbox" value="SESSION_LOG"> SESSION_LOG</label>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="topology">
+        <h2 class="panel-title">topology</h2>
+        <p class="help">
+          Pick a preset constellation or a custom Walker-Delta. Dynamic
+          variants (<code>LEO_DYN_*</code>) precompute handover snapshots.
+        </p>
+        <div class="grid">
+          <label class="field">
+            <span class="lbl">name</span>
+            <select id="topo_name">
+              <optgroup label="Static (analytical Walker-Delta)">
+                <option value="LEO_IRIDIUM">LEO_IRIDIUM</option>
+                <option value="LEO_STARLINK_MINI">LEO_STARLINK_MINI</option>
+                <option value="LEO">LEO (custom)</option>
+              </optgroup>
+              <optgroup label="Dynamic (handover snapshots)">
+                <option value="LEO_DYN_IRIDIUM">LEO_DYN_IRIDIUM</option>
+                <option value="LEO_DYN_STARLINK_MINI">LEO_DYN_STARLINK_MINI</option>
+                <option value="LEO_DYN">LEO_DYN (custom)</option>
+              </optgroup>
+            </select>
+          </label>
+          <label class="field">
+            <span class="lbl">seed</span>
+            <input type="text" id="topo_seed" value="42" class="sweepable" inputmode="decimal">
+          </label>
+          <label class="field full">
+            <span class="lbl">or sweep
+              <span class="hint">— JSON array of topology names overrides the select above</span>
+            </span>
+            <input type="text" id="topo_name_sweep" class="sweep-only"
+                   placeholder='e.g. ["LEO_IRIDIUM", "LEO_STARLINK_MINI"]'>
+          </label>
+        </div>
+
+        <div class="sub hidden" id="topo_custom">
+          <h3>Custom Walker constellation</h3>
+          <div class="grid three">
+            <label class="field">
+              <span class="lbl">n_planes</span>
+              <input type="text" id="n_planes" value="6" min="1" class="sweepable" inputmode="decimal">
+            </label>
+            <label class="field">
+              <span class="lbl">n_sats_per_plane</span>
+              <input type="text" id="n_sats_per_plane" value="11" min="1" class="sweepable" inputmode="decimal">
+            </label>
+            <label class="field">
+              <span class="lbl">altitude_km</span>
+              <input type="text" id="altitude_km" value="780" step="any" class="sweepable" inputmode="decimal">
+            </label>
+            <label class="field">
+              <span class="lbl">inclination_deg</span>
+              <input type="text" id="inclination_deg" value="86.4" step="any" class="sweepable" inputmode="decimal">
+            </label>
+            <label class="field">
+              <span class="lbl">isl_type</span>
+              <select id="isl_type">
+                <option value="plus_grid">plus_grid</option>
+                <option value="intra_only">intra_only</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="lbl">Walker pattern
+                <span class="hint">(Delta: planes over 360°, e.g. Starlink; Star: over 180°, e.g. Iridium)</span>
+              </span>
+              <select id="raan_span_deg">
+                <option value="360.0">Delta (360°)</option>
+                <option value="180.0">Star (180°)</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="lbl">phase_offset_deg
+                <span class="hint">(inter-plane phasing F·360/total sats; Iridium: 10.909)</span>
+              </span>
+              <input type="text" id="phase_offset_deg" value="0.0" step="any" class="sweepable" inputmode="decimal">
+            </label>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Common parameters
+            <span class="hint">— emitted only when different from defaults</span>
+          </h3>
+          <div class="grid three">
+            <label class="field">
+              <span class="lbl">n_receivers_per_gs</span>
+              <input type="text" id="n_receivers_per_gs" value="4" min="1" class="sweepable" inputmode="decimal">
+            </label>
+            <label class="field">
+              <span class="lbl">n_sources</span>
+              <input type="text" id="n_sources" value="3" min="1" class="sweepable" inputmode="decimal">
+            </label>
+            <label class="field">
+              <span class="lbl">n_gsl_per_gs</span>
+              <input type="text" id="n_gsl_per_gs" value="2" min="1" class="sweepable" inputmode="decimal">
+            </label>
+            <label class="field checkbox-row">
+              <input type="checkbox" id="allow_gs_transit" checked>
+              <span class="lbl">allow_gs_transit
+                <span class="hint">— if checked (default), a GS can also RELAY traffic between
+                two satellites: its 2 GSLs form a 2-hop bridge (bent-pipe style). Uncheck to make
+                the GS a pure gateway, so inter-satellite traffic stays on the ISLs. Routing only
+                (edge weights); delays are unaffected.</span>
+              </span>
+            </label>
+            <label class="field">
+              <span class="lbl">min_elevation_deg</span>
+              <input type="text" id="min_elevation_deg" value="5.0" step="any" class="sweepable" inputmode="decimal">
+            </label>
+            <label class="field">
+              <span class="lbl">isl_rate_bps
+                <span class="hint">(empty = preset default)</span>
+              </span>
+              <input type="text" id="isl_rate_bps" value="" class="sweepable">
+            </label>
+            <label class="field">
+              <span class="lbl">gsl_rate_bps</span>
+              <input type="text" id="gsl_rate_bps" value="" class="sweepable">
+            </label>
+            <label class="field">
+              <span class="lbl">user_radio_rate_bps</span>
+              <input type="text" id="user_radio_rate_bps" value="" class="sweepable">
+            </label>
+            <label class="field">
+              <span class="lbl">source_link_rate_bps</span>
+              <input type="text" id="source_link_rate_bps" value="" class="sweepable">
+            </label>
+          </div>
+        </div>
+
+        <div class="sub">
+          <h3>Receiver placement
+            <span class="hint">— D2D model selection</span>
+          </h3>
+          <div class="grid three">
+            <label class="field">
+              <span class="lbl">receiver_distribution</span>
+              <select id="receiver_distribution" onchange="toggleReceiverPlacementSubforms()">
+                <option value="colocated" selected>colocated (default, backhaul)</option>
+                <option value="uniform_global_safe">uniform_global_safe (D2D)</option>
+              </select>
+            </label>
+            <label class="field" id="lbl_receiver_placement_seed" style="display:none">
+              <span class="lbl">receiver_placement_seed
+                <span class="hint">(empty = use topology seed)</span>
+              </span>
+              <input type="text" id="receiver_placement_seed" value="42" class="sweepable" inputmode="decimal">
+            </label>
+            <label class="field" id="lbl_receiver_lat_cap_deg" style="display:none">
+              <span class="lbl">receiver_lat_cap_deg</span>
+              <input type="text" id="receiver_lat_cap_deg" value="85.0" step="any" class="sweepable" inputmode="decimal">
+            </label>
+            <label class="field" id="lbl_receiver_max_attempts" style="display:none">
+              <span class="lbl">receiver_max_attempts</span>
+              <input type="text" id="receiver_max_attempts" value="10" min="1" class="sweepable" inputmode="decimal">
+            </label>
+          </div>
+        </div>
+
+        <div class="sub hidden" id="topo_dyn">
+          <h3>Dynamic / handover</h3>
+
+          <div class="grid">
+            <label class="field">
+              <span class="lbl">n_snapshots
+                <span class="hint" id="n_snapshots_dt_hint"></span>
+              </span>
+              <input type="text" id="n_snapshots" value="100" min="1" inputmode="decimal">
+            </label>
+          </div>
+
+          <div class="grid">
+            <label class="field checkbox-row">
+              <input type="checkbox" id="disable_handover" onchange="onDisableHandoverChange()">
+              <span class="lbl">disable_handover
+                <span class="hint">(if checked, sets blackout=0 and disables all handover effects)</span>
+              </span>
+            </label>
+            <label class="field">
+              <span class="lbl">handover_source
+                <span class="hint">(analytic: handovers computed from the orbital geometry; snapshot: serving satellite re-evaluated at each snapshot)</span>
+              </span>
+              <select id="handover_source" onchange="toggleHandoverSourceSubforms()">
+                <option value="analytic" selected>analytic</option>
+                <option value="snapshot">snapshot</option>
+              </select>
+            </label>
+            <label class="field" id="lbl_handover_period_s">
+              <span class="lbl">handover_period_s
+                <span class="hint">(analytic only: force periodic HO every N seconds; empty = geometric BBM)</span>
+              </span>
+              <input type="text" id="handover_period_s" value="" step="any" class="sweepable" inputmode="decimal">
+            </label>
+            <label class="field">
+              <span class="lbl">handover_blackout_distribution
+                <span class="hint">(fixed: single value; uniform: random in [min,max])</span>
+              </span>
+              <select id="handover_blackout_distribution">
+                <option value="fixed" selected>fixed</option>
+                <option value="uniform">uniform</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="grid">
+            <label class="field" id="lbl_handover_blackout_s" style="grid-column-start: 2;">
+              <span class="lbl">handover_blackout_s
+                <span class="hint">(used when distribution=fixed)</span>
+              </span>
+              <input type="text" id="handover_blackout_s" value="0.05" step="any" class="sweepable" inputmode="decimal">
+            </label>
+          </div>
+          <div class="grid three">
+            <label class="field" id="lbl_handover_blackout_min_s" style="display:none">
+              <span class="lbl">handover_blackout_min_s
+                <span class="hint">(uniform lower bound, s)</span>
+              </span>
+              <input type="text" id="handover_blackout_min_s" value="" step="any" class="sweepable" inputmode="decimal">
+            </label>
+            <label class="field" id="lbl_handover_blackout_max_s" style="display:none">
+              <span class="lbl">handover_blackout_max_s
+                <span class="hint">(uniform upper bound, s)</span>
+              </span>
+              <input type="text" id="handover_blackout_max_s" value="" step="any" class="sweepable" inputmode="decimal">
+            </label>
+            <label class="field" id="lbl_handover_blackout_seed" style="display:none">
+              <span class="lbl">handover_blackout_seed
+                <span class="hint">(empty = uses topology seed)</span>
+              </span>
+              <input type="text" id="handover_blackout_seed" value="42" inputmode="decimal">
+            </label>
+          </div>
+        </div>
+
+        <div class="sub hidden" id="topo_tle">
+          <h3>TLE / SGP4 propagation</h3>
+          <div class="grid">
+            <label class="field full">
+              <span class="lbl">propagation_time
+                <span class="hint">(tuple (Y, M, D, h, m, s) UTC)</span>
+              </span>
+              <input type="text" id="propagation_time" value="(2026, 3, 31, 12, 0, 0)">
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="workload">
+        <h2 class="panel-title">workload</h2>
+        <p class="help">
+          Content request workload. <code>STATIONARY_CHUNKED</code> is
+          the chunk-level variant (one Data packet per chunk).
+          <code>n_chunks</code> only applies to that workload.
+        </p>
+        <div class="grid three">
+          <label class="field">
+            <span class="lbl">name</span>
+            <select id="wl_name">
+              <option value="STATIONARY_CHUNKED">STATIONARY_CHUNKED</option>
+              <option value="STATIONARY">STATIONARY (legacy)</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="lbl">n_contents</span>
+            <input type="text" id="wl_n_contents" value="100000" min="1" class="sweepable" inputmode="decimal">
+          </label>
+          <label class="field" id="wl_chunks_field">
+            <span class="lbl">n_chunks</span>
+            <input type="text" id="wl_n_chunks" value="4" min="1" class="sweepable" inputmode="decimal">
+          </label>
+          <label class="field">
+            <span class="lbl">alpha
+              <span class="hint">(Zipf exponent)</span>
+            </span>
+            <input type="text" id="wl_alpha" value="1.0" step="any" class="sweepable" inputmode="decimal">
+          </label>
+          <label class="field">
+            <span class="lbl">n_warmup</span>
+            <input type="text" id="wl_n_warmup" value="5000" min="0" class="sweepable" inputmode="decimal">
+          </label>
+          <label class="field">
+            <span class="lbl">n_measured</span>
+            <input type="text" id="wl_n_measured" value="20000" min="1" class="sweepable" inputmode="decimal">
+          </label>
+          <label class="field">
+            <span class="lbl">rate
+              <span class="hint">(req/s)</span>
+            </span>
+            <input type="text" id="wl_rate" value="1.0" step="any" class="sweepable" inputmode="decimal">
+          </label>
+          <label class="field">
+            <span class="lbl">chunk_size_bytes
+              <span class="hint">(ICN Data packet)</span>
+            </span>
+            <input type="text" id="wl_chunk_size_bytes" value="8192" min="1" class="sweepable" inputmode="decimal">
+          </label>
+          <label class="field">
+            <span class="lbl">seed
+              <span class="hint">(empty = None)</span>
+            </span>
+            <input type="text" id="wl_seed" value="42" class="sweepable">
+          </label>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="cache">
+        <h2 class="panel-title">cache placement / policy</h2>
+        <p class="help">
+          Cache placement decides which network nodes hold caches and
+          their sizes. Cache policy decides how each individual cache
+          evicts entries (LRU, FIFO, LFU, …).
+        </p>
+        <div class="grid">
+          <label class="field">
+            <span class="lbl">cache_placement.name</span>
+            <select id="cp_name">
+              <option>UNIFORM</option>
+              <option>DEGREE</option>
+              <option>BETWEENNESS_CENTRALITY</option>
+              <option>CONSOLIDATED</option>
+            </select>
+          </label>
+          <label class="field full">
+            <span class="lbl">or sweep
+              <span class="hint">— JSON array of cache_placement names overrides the select above</span>
+            </span>
+            <input type="text" id="cp_name_sweep" class="sweep-only"
+                   placeholder='e.g. ["UNIFORM", "BETWEENNESS_CENTRALITY"]'>
+          </label>
+          <label class="field">
+            <span class="lbl">network_cache
+              <span class="hint">(fraction, e.g. 0.05)</span>
+            </span>
+            <input type="text" id="cp_network_cache" value="0.05" step="any" min="0" max="1" class="sweepable" inputmode="decimal">
+            <div class="hint" id="cache_size_hint" style="margin-top:4px;font-size:11px"></div>
+          </label>
+          <label class="field">
+            <span class="lbl">content_placement.name</span>
+            <select id="contp_name">
+              <option>UNIFORM_CHUNKED</option>
+              <option>UNIFORM</option>
+              <option>WEIGHTED</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="lbl">content_placement.seed
+              <span class="hint">(optional; set for reproducibility)</span>
+            </span>
+            <input type="text" id="contp_seed" value="42" class="sweepable" inputmode="decimal">
+          </label>
+          <label class="field full">
+            <span class="lbl">or sweep
+              <span class="hint">— JSON array of content_placement names</span>
+            </span>
+            <input type="text" id="contp_name_sweep" class="sweep-only"
+                   placeholder='e.g. ["UNIFORM_CHUNKED", "WEIGHTED"]'>
+          </label>
+          <label class="field">
+            <span class="lbl">cache_policy.name</span>
+            <select id="cpolicy_name">
+              <option>LRU</option>
+              <option>FIFO</option>
+              <option>RAND</option>
+              <option>CLIMB</option>
+              <option>IN_CACHE_LFU</option>
+              <option>PERFECT_LFU</option>
+              <option>SLRU</option>
+              <option>NULL</option>
+            </select>
+          </label>
+          <label class="field full">
+            <span class="lbl">or sweep
+              <span class="hint">— JSON array of cache_policy names</span>
+            </span>
+            <input type="text" id="cpolicy_name_sweep" class="sweep-only"
+                   placeholder='e.g. ["LRU", "FIFO", "RAND"]'>
+          </label>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="strategy">
+        <h2 class="panel-title">strategy</h2>
+        <p class="help">
+          Forwarding / caching strategy. Lossy variants apply the loss
+          model on every hop; Retry variants add retransmission of lost chunks.
+          The latency of every hop always includes the propagation delay and
+          the transmission time (packet size in bits divided by the link rate
+          set in the Topology tab); queueing is not modelled.
+          Sub-fields below adapt to the chosen strategy.
+        </p>
+        <div class="grid">
+          <label class="field full">
+            <span class="lbl">name</span>
+            <select id="strat_name">
+              <optgroup label="Retry (inline retransmission): use max_retries=0 for a single attempt">
+                <option>RETRY_LCD_LOSSY</option>
+                <option>RETRY_LCE_LOSSY</option>
+                <option>RETRY_PROB_CACHE_LOSSY</option>
+                <option>RETRY_CL4M_LOSSY</option>
+              </optgroup>
+              <optgroup label="Legacy / no-loss">
+                <option>LCD</option>
+                <option>LCE</option>
+                <option>NO_CACHE</option>
+                <option>EDGE</option>
+                <option>PARTITION</option>
+                <option>NRR</option>
+                <option>RAND_BERNOULLI</option>
+                <option>RAND_CHOICE</option>
+              </optgroup>
+              <optgroup label="Hashrouting">
+                <option>HASHROUTING</option>
+                <option>HR_EDGE_CACHE</option>
+                <option>HR_ON_PATH</option>
+                <option>HR_CLUSTER</option>
+                <option>HR_SYMM</option>
+                <option>HR_ASYMM</option>
+                <option>HR_MULTICAST</option>
+                <option>HR_HYBRID_AM</option>
+                <option>HR_HYBRID_SM</option>
+              </optgroup>
+              <optgroup label="LEO / fragment">
+              </optgroup>
+            </select>
+          </label>
+          <label class="field full">
+            <span class="lbl">or sweep
+              <span class="hint">— JSON array of strategy names overrides the select above</span>
+            </span>
+            <input type="text" id="strat_name_sweep" class="sweep-only"
+                   placeholder='e.g. ["RETRY_LCD_LOSSY", "RETRY_LCE_LOSSY"]'>
+          </label>
+        </div>
+
+        <div class="sub hidden" id="strat_retry">
+          <h3>Retry parameters</h3>
+          <div class="grid three">
+            <label class="field">
+              <span class="lbl">max_retries</span>
+              <input type="text" id="max_retries" value="2" min="0" max="10" class="sweepable" inputmode="decimal">
+            </label>
+            <label class="field">
+              <span class="lbl">retry_timeout_ms</span>
+              <input type="text" id="retry_timeout_ms" value="300.0" step="any" class="sweepable" inputmode="decimal">
+            </label>
+          </div>
+        </div>
+
+        <div class="sub hidden" id="strat_probcache">
+          <h3>PROB_CACHE parameters</h3>
+          <div class="grid">
+            <label class="field">
+              <span class="lbl">t_tw</span>
+              <input type="text" id="t_tw" value="10" class="sweepable" inputmode="decimal">
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tab-panel" data-panel="loss">
+        <h2 class="panel-title">loss_model
+          <span class="badge olive">G-E v20: per-link-type</span>
+        </h2>
+        <p class="help">
+          Packet loss model. Pick <code>NONE</code> for a noiseless
+          simulation (the <code>loss_model</code> key is omitted from
+          the strategy dict). G-E v20 supports per-link-type BERs.
+        </p>
+        <div class="grid">
+          <label class="field">
+            <span class="lbl">name</span>
+            <select id="loss_name">
+              <option value="NONE">NONE (no loss)</option>
+              <option value="BERNOULLI" selected>BERNOULLI</option>
+              <option value="GILBERT_ELLIOTT">GILBERT_ELLIOTT</option>
+              <option value="COMPOSITE">COMPOSITE (per-link-type)</option>
+            </select>
+            <div class="hint" id="loss_none_hint" style="margin-top:4px;font-size:11px"></div>
+          </label>
+          <label class="field" id="loss_seed_field">
+            <span class="lbl">seed</span>
+            <input type="text" id="loss_seed" value="42" class="sweepable" inputmode="decimal">
+          </label>
+          <label class="field full">
+            <span class="lbl">or sweep
+              <span class="hint">— JSON array of loss model names overrides the select above</span>
+            </span>
+            <input type="text" id="loss_name_sweep" class="sweep-only"
+                   placeholder='e.g. ["BERNOULLI", "GILBERT_ELLIOTT"]'>
+          </label>
+        </div>
+
+        <div class="sub hidden" id="loss_bernoulli">
+          <h3>Bernoulli i.i.d.</h3>
+          <div class="grid three">
+            <label class="field">
+              <span class="lbl">ber_gsl</span>
+              <input type="text" id="bern_ber_gsl" value="5e-6" class="sweepable">
+            </label>
+            <label class="field">
+              <span class="lbl">ber_isl</span>
+              <input type="text" id="bern_ber_isl" value="5e-7" class="sweepable">
+            </label>
+            <label class="field">
+              <span class="lbl">ber_access</span>
+              <input type="text" id="bern_ber_access" value="1e-9" class="sweepable">
+            </label>
+            <label class="field">
+              <span class="lbl">ber_user_radio
+                <span class="hint">(empty = ber_gsl)</span>
+              </span>
+              <input type="text" id="bern_ber_user_radio" value="" class="sweepable">
+            </label>
+          </div>
+        </div>
+
+        <div class="sub sub-olive hidden" id="loss_ge">
+          <h3>Gilbert-Elliott (two-state Markov)</h3>
+          <div class="grid">
+            <label class="field">
+              <span class="lbl">p_gb
+                <span class="hint">(Good→Bad)</span>
+              </span>
+              <input type="text" id="ge_p_gb" value="0.02" class="sweepable">
+            </label>
+            <label class="field">
+              <span class="lbl">p_bg
+                <span class="hint">(Bad→Good)</span>
+              </span>
+              <input type="text" id="ge_p_bg" value="0.15" class="sweepable">
+            </label>
+          </div>
+
+          <label class="field checkbox-row" style="margin-top:8px;">
+            <input type="checkbox" id="ge_handover_forces_bad">
+            <span class="lbl">handover_forces_bad
+              <span class="hint">— off by default. With a dynamic
+              constellation the handover blackout is already applied;
+              forcing the Bad state as well would count the same event
+              twice. Enable it only to model handovers without a dynamic
+              constellation.</span>
+            </span>
+          </label>
+
+          <h3 style="margin-top:14px;">Scalar BER (default fallback)</h3>
+          <p class="help">
+            Used for any link type that does not have an explicit
+            per-link-type BER below.
+          </p>
+          <div class="grid">
+            <label class="field">
+              <span class="lbl">ber_good</span>
+              <input type="text" id="ge_ber_good" value="1e-8" class="sweepable">
+            </label>
+            <label class="field">
+              <span class="lbl">ber_bad</span>
+              <input type="text" id="ge_ber_bad" value="1e-4" class="sweepable">
+            </label>
+          </div>
+
+          <h3 style="margin-top:14px;">Per-link-type BER
+            <span class="hint">(leave blank to use scalar defaults)</span>
+          </h3>
+          <p class="help">
+            Available since v20. Resolution: <em>specific</em> &gt;
+            <em>family</em> (e.g. <code>ber_*_isl</code> covers both
+            intra and inter) &gt; scalar default.
+            <code>user_radio</code> falls back to <code>gsl</code>
+            (same slant range) when not set.
+          </p>
+          <div class="grid">
+            <label class="field">
+              <span class="lbl">ber_good_gsl</span>
+              <input type="text" id="ge_ber_good_gsl" value="" class="sweepable">
+            </label>
+            <label class="field">
+              <span class="lbl">ber_bad_gsl</span>
+              <input type="text" id="ge_ber_bad_gsl" value="" class="sweepable">
+            </label>
+            <label class="field">
+              <span class="lbl">ber_good_isl
+                <span class="hint">(intra+inter)</span>
+              </span>
+              <input type="text" id="ge_ber_good_isl" value="" class="sweepable">
+            </label>
+            <label class="field">
+              <span class="lbl">ber_bad_isl</span>
+              <input type="text" id="ge_ber_bad_isl" value="" class="sweepable">
+            </label>
+            <label class="field">
+              <span class="lbl">ber_good_access</span>
+              <input type="text" id="ge_ber_good_access" value="" class="sweepable">
+            </label>
+            <label class="field">
+              <span class="lbl">ber_bad_access</span>
+              <input type="text" id="ge_ber_bad_access" value="" class="sweepable">
+            </label>
+            <label class="field">
+              <span class="lbl">ber_good_user_radio
+                <span class="hint">(default → gsl)</span>
+              </span>
+              <input type="text" id="ge_ber_good_user_radio" value="" class="sweepable">
+            </label>
+            <label class="field">
+              <span class="lbl">ber_bad_user_radio</span>
+              <input type="text" id="ge_ber_bad_user_radio" value="" class="sweepable">
+            </label>
+          </div>
+        </div>
+
+        <div class="sub hidden" id="loss_composite">
+          <h3>Composite (per-link-type sub-models)</h3>
+          <p class="help">
+            Routes each loss decision to a different sub-model based on
+            the link type. Use this when different physical links need
+            different loss models, e.g. a recorded trace on the radio
+            link plus Bernoulli on satellite links plus no loss on
+            cabled links. Each section below configures one link type;
+            link types left unconfigured have no loss.
+          </p>
+          <div id="composite_link_sections">
+
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="load">
+        <h2 class="panel-title">Load existing config
+          <span class="badge olive">file preview</span>
+        </h2>
+        <p class="help">
+          Load a previously-generated <code>.py</code> config to
+          pre-populate the form. Only configs generated by this builder
+          are supported (single experiments and sweeps, including
+          multi-axis sweeps). After loading, you can edit any field and
+          re-download the modified config from the <em>Output</em> tab.
+        </p>
+        <div class="actions">
+          <button id="btn_load" type="button">Choose file ...</button>
+          <input type="file" id="load_file_input" accept=".py" style="display:none">
+          <span id="load_status" style="margin-left:10px;font-size:12px"></span>
+        </div>
+        <textarea id="load_preview" readonly spellcheck="false"
+                  placeholder="Loaded file contents will appear here..."></textarea>
+      </div>
+
+      <div class="tab-panel" data-panel="output">
+        <h2 class="panel-title"><span>config_<span id="output_filename_label">my_experiment</span>.py</span>
+          <span class="badge olive">live preview</span>
+        </h2>
+        <p class="help">
+          The configuration is regenerated automatically whenever you
+          change any field or switch tabs. Click <em>Download .py</em>
+          to save the file, or select the text below and copy it
+          (Ctrl+A, Ctrl+C).
+        </p>
+        <div class="hint" id="seed_hint" style="margin-bottom:6px;font-size:11px"></div>
+        <textarea id="output" readonly spellcheck="false"></textarea>
+        <div class="actions">
+          <button id="btn_download">Download .py</button>
+        </div>
+        <p class="note">
+          <u>The file will be saved in the Downloads folder</u>.
+          <br>
+          If you have the simulator engine, run:
+          <br>
+          <code>icarus run -r results.pickle &lt;file&gt;.py</code>
+          <br>
+          and generate the interactive viewer with:
+          <br>
+          <code>python3 tools/generate_log_viewer.py results.pickle -o viewer.html --n-viewable 1000</code>
+          <br>
+          Otherwise, see the
+          <a href="https://github.com/gcampobello/ICARUS-LEO" target="_blank" rel="noopener">ICARUS-LEO repository on GitHub</a>
+          for how to have it run.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<footer>
+  ICARUS-LEO config builder · single experiment
+</footer>
+
+</div>
+
+<script>
+
+const $ = id => document.getElementById(id);
+
+function activateTab(name) {
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    p.classList.toggle('active', p.dataset.panel === name);
+  });
+
+  refresh();
+}
+
+function toggleTopologySubforms() {
+  const name = $('topo_name').value;
+  const isCustomStatic = name === 'LEO';
+  const isCustomDyn = name === 'LEO_DYN';
+  const isCustomTle = name === 'LEO_TLE';
+  const isDyn = name.startsWith('LEO_DYN');
+  const isTle = name.endsWith('_TLE');
+
+  $('topo_custom').classList.toggle(
+    'hidden', !(isCustomStatic || isCustomDyn || isCustomTle));
+  $('topo_dyn').classList.toggle('hidden', !isDyn);
+  $('topo_tle').classList.toggle('hidden', !isTle);
+}
+
+function toggleHandoverBlackoutSubforms() {
+  const dist = $('handover_blackout_distribution').value;
+  const isFixed = (dist === 'fixed');
+  const isUniform = (dist === 'uniform');
+  $('lbl_handover_blackout_s').style.display = isFixed ? '' : 'none';
+  $('lbl_handover_blackout_min_s').style.display = isUniform ? '' : 'none';
+  $('lbl_handover_blackout_max_s').style.display = isUniform ? '' : 'none';
+  $('lbl_handover_blackout_seed').style.display = isUniform ? '' : 'none';
+}
+
+function onDisableHandoverChange() {
+
+  const disabled = $('disable_handover').checked;
+  if (disabled) {
+    $('handover_blackout_s').value = '0';
+    $('handover_blackout_max_s').value = '0';
+  } else {
+
+    if ($('handover_blackout_s').value === '0') {
+      $('handover_blackout_s').value = '0.05';
+    }
+    if ($('handover_blackout_max_s').value === '0') {
+      $('handover_blackout_max_s').value = '';
+    }
+  }
+  applyDisableHandoverVisualState();
+}
+
+function applyDisableHandoverVisualState() {
+
+  const disabled = $('disable_handover').checked;
+  const fields = ['handover_source',
+                  'handover_period_s',
+                  'handover_blackout_distribution',
+                  'handover_blackout_s',
+                  'handover_blackout_min_s',
+                  'handover_blackout_max_s',
+                  'handover_blackout_seed'];
+  for (const fid of fields) {
+    const el = $(fid);
+    if (el) el.disabled = disabled;
+  }
+}
+
+function toggleReceiverPlacementSubforms() {
+
+  const dist = $('receiver_distribution').value;
+  const isSafe = (dist === 'uniform_global_safe');
+  $('lbl_receiver_placement_seed').style.display = isSafe ? '' : 'none';
+  $('lbl_receiver_lat_cap_deg').style.display = isSafe ? '' : 'none';
+  $('lbl_receiver_max_attempts').style.display = isSafe ? '' : 'none';
+}
+
+function toggleParallel() {
+  const par = $('parallel').value === 'True';
+  $('nproc_field').classList.toggle('disabled', !par);
+}
+
+function toggleWorkloadChunks() {
+  const isChunked = $('wl_name').value === 'STATIONARY_CHUNKED';
+  $('wl_chunks_field').classList.toggle('disabled', !isChunked);
+}
+
+function toggleStrategySubforms() {
+  const s = $('strat_name').value;
+  const isRetry = s.startsWith('RETRY_');
+  const isProb = s.includes('PROB_CACHE');
+
+  $('strat_retry').classList.toggle('hidden', !isRetry);
+  $('strat_probcache').classList.toggle('hidden', !isProb);
+}
+
+function toggleLossSubforms() {
+  const n = $('loss_name').value;
+  $('loss_bernoulli').classList.toggle('hidden', n !== 'BERNOULLI');
+  $('loss_ge').classList.toggle('hidden', n !== 'GILBERT_ELLIOTT');
+  $('loss_composite').classList.toggle('hidden', n !== 'COMPOSITE');
+  $('loss_seed_field').classList.toggle('disabled', n === 'NONE');
+}
+
+const COMPOSITE_LINK_TYPES = [
+  'user_radio', 'gsl', 'isl_intra', 'isl_inter', 'access',
+];
+
+const COMPOSITE_LINK_DESC = {
+  user_radio:   'receiver ↔ satellite terminal',
+  gsl:          'ground station ↔ satellite',
+  isl_intra:    'intra-plane inter-satellite',
+  isl_inter:    'inter-plane inter-satellite',
+  access:       'ground station ↔ content server (cable/fiber)',
+};
+
+function populateCompositeSections() {
+  const container = $('composite_link_sections');
+  if (!container) return;
+
+  const blocks = [];
+  for (const lt of COMPOSITE_LINK_TYPES) {
+    blocks.push(buildCompositeBlock(lt, COMPOSITE_LINK_DESC[lt] || ''));
+  }
+  container.innerHTML = blocks.join('');
+
+  for (const lt of COMPOSITE_LINK_TYPES) {
+    const pick = $('comp_' + lt + '_name');
+    if (pick) {
+      pick.addEventListener('change', () => toggleCompositeBlock(lt));
+      pick.addEventListener('input', () => toggleCompositeBlock(lt));
+    }
+    toggleCompositeBlock(lt);
+  }
+}
+
+function buildCompositeBlock(key, desc) {
+  const subText = desc ? '<span class="hint">(' + desc + ')</span>' : '';
+
+  const bernKey = COMPOSITE_BERN_PARAM[key];
+  const bernDefault = COMPOSITE_BERN_DEFAULT[key];
+  const bernHtml = (
+    '<label class="field"><span class="lbl">' + bernKey + '</span>' +
+    '<input type="text" id="comp_' + key + '_bern_ber" value="' +
+    bernDefault + '"></label>'
+  );
+
+  return (
+    '<details style="margin-bottom: 8px; border: 0.5px solid #ccc; ' +
+    'border-radius: 4px; padding: 6px 10px;">' +
+    '<summary style="cursor: pointer; user-select: none;">' +
+    '<strong>' + key + '</strong> ' + subText +
+    ' — <span id="comp_' + key + '_summary" style="color: #888;">NONE</span>' +
+    '</summary>' +
+    '<div style="padding: 10px 0 6px 12px;">' +
+
+    '<label class="field" style="margin-bottom: 8px;">' +
+    '<span class="lbl">sub-model</span>' +
+    '<select id="comp_' + key + '_name">' +
+    '<option value="NONE" selected>NONE (no loss)</option>' +
+    '<option value="BERNOULLI">BERNOULLI</option>' +
+    '<option value="GILBERT_ELLIOTT">GILBERT_ELLIOTT</option>' +
+    '<option value="TRACE">TRACE</option>' +
+    '</select>' +
+    '</label>' +
+
+    '<div id="comp_' + key + '_bern" class="hidden" ' +
+    'style="margin-left: 8px; padding: 6px 10px; background: #f9f9f2;">' +
+    bernHtml +
+    '<label class="field"><span class="lbl">seed (optional)</span>' +
+    '<input type="text" id="comp_' + key + '_bern_seed" value=""></label>' +
+    '</div>' +
+
+    '<div id="comp_' + key + '_ge" class="hidden" ' +
+    'style="margin-left: 8px; padding: 6px 10px; background: #f5f5e8;">' +
+    '<label class="field"><span class="lbl">p_gb (Good→Bad)</span>' +
+    '<input type="text" id="comp_' + key + '_ge_p_gb" value="0.02"></label>' +
+    '<label class="field"><span class="lbl">p_bg (Bad→Good)</span>' +
+    '<input type="text" id="comp_' + key + '_ge_p_bg" value="0.15"></label>' +
+    '<label class="field"><span class="lbl">ber_good</span>' +
+    '<input type="text" id="comp_' + key + '_ge_ber_good" value="1e-8"></label>' +
+    '<label class="field"><span class="lbl">ber_bad</span>' +
+    '<input type="text" id="comp_' + key + '_ge_ber_bad" value="1e-4"></label>' +
+    '<label class="field"><span class="lbl">seed (optional)</span>' +
+    '<input type="text" id="comp_' + key + '_ge_seed" value=""></label>' +
+    '</div>' +
+
+    '<div id="comp_' + key + '_trace" class="hidden" ' +
+    'style="margin-left: 8px; padding: 6px 10px; background: #f0f4f8;">' +
+    '<label class="field full">' +
+    '<span class="lbl">trace_npz_path</span>' +
+    '<input type="text" id="comp_' + key + '_trace_path" value="" ' +
+    'placeholder="builtin filename, or absolute / relative path">' +
+    '</label>' +
+    '<label class="field"><span class="lbl">seed (optional)</span>' +
+    '<input type="text" id="comp_' + key + '_trace_seed" value=""></label>' +
+    '</div>' +
+
+    '</div>' +
+    '</details>'
+  );
+}
+
+const COMPOSITE_BERN_PARAM = {
+  user_radio:  'ber_user_radio',
+  gsl:         'ber_gsl',
+  isl_intra:   'ber_isl',
+  isl_inter:   'ber_isl',
+  access:      'ber_access',
+};
+const COMPOSITE_BERN_DEFAULT = {
+  user_radio:  '1e-6',
+  gsl:         '1e-6',
+  isl_intra:   '1e-9',
+  isl_inter:   '1e-9',
+  access:      '1e-9',
+};
+
+function toggleCompositeBlock(key) {
+  const pick = $('comp_' + key + '_name');
+  if (!pick) return;
+  const sub = pick.value;
+  $('comp_' + key + '_bern').classList.toggle('hidden', sub !== 'BERNOULLI');
+  $('comp_' + key + '_ge').classList.toggle('hidden', sub !== 'GILBERT_ELLIOTT');
+  $('comp_' + key + '_trace').classList.toggle('hidden', sub !== 'TRACE');
+
+  const summary = $('comp_' + key + '_summary');
+  if (summary) summary.textContent = sub;
+}
+
+function collectCompositeSub(key) {
+  const pick = $('comp_' + key + '_name');
+  if (!pick) return null;
+  const sub = pick.value;
+  if (sub === 'NONE') return {name: 'NONE'};
+  if (sub === 'BERNOULLI') {
+    const cfg = {name: 'BERNOULLI'};
+
+    const bernKey = COMPOSITE_BERN_PARAM[key];
+    const v = $('comp_' + key + '_bern_ber').value.trim();
+    if (v) cfg[bernKey] = parseFloat(v);
+    const s = $('comp_' + key + '_bern_seed').value.trim();
+    if (s) cfg.seed = parseInt(s, 10);
+    return cfg;
+  }
+  if (sub === 'GILBERT_ELLIOTT') {
+    const cfg = {name: 'GILBERT_ELLIOTT'};
+    cfg.p_gb = parseFloat($('comp_' + key + '_ge_p_gb').value || '0.02');
+    cfg.p_bg = parseFloat($('comp_' + key + '_ge_p_bg').value || '0.15');
+    cfg.ber_good = parseFloat($('comp_' + key + '_ge_ber_good').value || '1e-8');
+    cfg.ber_bad = parseFloat($('comp_' + key + '_ge_ber_bad').value || '1e-4');
+    const s = $('comp_' + key + '_ge_seed').value.trim();
+    if (s) cfg.seed = parseInt(s, 10);
+    return cfg;
+  }
+  if (sub === 'TRACE') {
+    const cfg = {name: 'TRACE'};
+    const p = $('comp_' + key + '_trace_path').value.trim();
+    if (p) cfg.trace_npz_path = p;
+    const s = $('comp_' + key + '_trace_seed').value.trim();
+    if (s) cfg.seed = parseInt(s, 10);
+    return cfg;
+  }
+  return null;
+}
+
+function tryParseArray(raw, expectedType) {
+  if (raw === null || raw === undefined) return {ok: false, notArray: true};
+  const trimmed = String(raw).trim();
+  if (!trimmed.startsWith('[')) return {ok: false, notArray: true};
+
+  let parsed;
+  try {
+    parsed = JSON.parse(trimmed);
+  } catch (e) {
+    return {ok: false, error: 'malformed array: ' + e.message};
+  }
+  if (!Array.isArray(parsed)) {
+    return {ok: false, error: 'not a JSON array'};
+  }
+  if (parsed.length === 0) {
+    return {ok: false, error: 'empty array'};
+  }
+
+  if (expectedType === 'number') {
+    for (const v of parsed) {
+      if (typeof v !== 'number' || !isFinite(v)) {
+        return {ok: false, error: 'expected numeric array'};
+      }
+    }
+  } else if (expectedType === 'int') {
+    for (const v of parsed) {
+      if (typeof v !== 'number' || !Number.isInteger(v)) {
+        return {ok: false, error: 'expected integer array'};
+      }
+    }
+  } else if (expectedType === 'string') {
+    for (const v of parsed) {
+      if (typeof v !== 'string') {
+        return {ok: false, error: 'expected string array'};
+      }
+    }
+  } else if (expectedType === 'bool') {
+    for (const v of parsed) {
+      if (typeof v !== 'boolean') {
+        return {ok: false, error: 'expected boolean array (true/false)'};
+      }
+    }
+  }
+
+  let rawValues = null;
+  if (expectedType === 'number' || expectedType === 'int') {
+    try {
+      const inner = trimmed.slice(1, trimmed.lastIndexOf(']'));
+      rawValues = inner.split(',').map(s => s.trim());
+      if (rawValues.length !== parsed.length) rawValues = null;
+    } catch (e) { rawValues = null; }
+  }
+  return {ok: true, values: parsed, rawValues: rawValues};
+}
+
+function readFloatField(id, fallback, allowEmpty) {
+  const el = $(id);
+  if (!el) return fallback;
+  const raw = el.value.trim();
+  if (raw === '') {
+    if (allowEmpty) return null;
+    return fallback;
+  }
+  if (raw.startsWith('[')) {
+    const p = tryParseArray(raw, 'number');
+    if (!p.ok) throw new Error(`${id}: ${p.error}`);
+    return {sweep: true, axis: id, values: p.values,
+            rawValues: p.rawValues, kind: 'float'};
+  }
+
+  if (/^-?\d+(\.\d+)?([eE][+-]?\d+)?$/.test(raw)) return raw;
+  return fallback;
+}
+
+function readIntField(id, fallback, allowEmpty) {
+  const el = $(id);
+  if (!el) return fallback;
+  const raw = el.value.trim();
+  if (raw === '') {
+    if (allowEmpty) return null;
+    return fallback;
+  }
+  if (raw.startsWith('[')) {
+    const p = tryParseArray(raw, 'int');
+    if (!p.ok) throw new Error(`${id}: ${p.error}`);
+    return {sweep: true, axis: id, values: p.values,
+            rawValues: p.rawValues, kind: 'int'};
+  }
+  const n = parseInt(raw, 10);
+  if (isNaN(n)) return fallback;
+  return n;
+}
+
+function readStringField(id, fallback) {
+  const el = $(id);
+  if (!el) return fallback;
+
+  const sweepEl = $(id + '_sweep');
+  if (sweepEl) {
+    const sweepRaw = sweepEl.value.trim();
+    if (sweepRaw.startsWith('[')) {
+      const p = tryParseArray(sweepRaw, 'string');
+      if (!p.ok) throw new Error(`${id}: ${p.error}`);
+      return {sweep: true, axis: id, values: p.values, kind: 'string'};
+    }
+  }
+  const raw = el.value.trim();
+  if (raw === '') return fallback;
+  return raw;
+}
+
+function isSweep(v) {
+  return v !== null && typeof v === 'object'
+         && v.sweep === true && Array.isArray(v.values);
+}
+
+function enumerateSweeps(obj, pathPrefix) {
+  pathPrefix = pathPrefix || '';
+  const axes = [];
+  if (isSweep(obj)) {
+    axes.push({path: pathPrefix, axis: obj.axis,
+               values: obj.values, rawValues: obj.rawValues,
+               kind: obj.kind, _varName: obj._varName});
+    return axes;
+  }
+  if (obj === null || typeof obj !== 'object') return axes;
+  for (const k of Object.keys(obj)) {
+    const child = obj[k];
+    const childPath = pathPrefix ? pathPrefix + '.' + k : k;
+    axes.push(...enumerateSweeps(child, childPath));
+  }
+  return axes;
+}
+
+function totalExperiments(axes) {
+  if (axes.length === 0) return 1;
+  return axes.reduce((acc, ax) => acc * ax.values.length, 1);
+}
+
+function pyStr(s) {
+  return "'" + String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
+}
+
+function pyBool(s) { return s === 'True' ? 'True' : 'False'; }
+
+function pyDict(obj, indent) {
+  indent = indent || '    ';
+  const inner = indent + '    ';
+  const lines = ["{"];
+  const keys = Object.keys(obj);
+  for (const k of keys) {
+    const v = obj[k];
+    const valRepr = pyValue(v, inner);
+    lines.push(inner + pyStr(k) + ": " + valRepr + ",");
+  }
+  lines.push(indent + "}");
+  return lines.join('\n');
+}
+
+function pyValue(v, indent) {
+  if (v === null || v === undefined) return 'None';
+  if (typeof v === 'boolean') return v ? 'True' : 'False';
+  if (typeof v === 'number') return String(v);
+
+  if (isSweep(v)) {
+    return v._varName || ('_' + v.axis + '_v');
+  }
+  if (typeof v === 'string') {
+
+    if (/^-?\d+(\.\d+)?([eE][+-]?\d+)?$/.test(v)) return v;
+    if (/^\(.*\)$/.test(v.trim())) return v;
+    if (v === 'True' || v === 'False' || v === 'None') return v;
+    return pyStr(v);
+  }
+  if (typeof v === 'object') return pyDict(v, indent);
+  return String(v);
+}
+
+function pyFloatField(id, fallback) {
+  const raw = $(id).value.trim();
+  if (raw === '') return fallback;
+  if (/^-?\d+(\.\d+)?([eE][+-]?\d+)?$/.test(raw)) return raw;
+  return fallback;
+}
+
+function collectTopology() {
+  const topo = { name: readStringField('topo_name', 'LEO_IRIDIUM') };
+  const seed = readIntField('topo_seed', null, true);
+  if (seed !== null) topo.seed = seed;
+
+  const name = topo.name;
+  const isCustom = !isSweep(name) && (
+    name === 'LEO' || name === 'LEO_DYN' || name === 'LEO_TLE');
+
+  if (isCustom) {
+    topo.n_planes = readIntField('n_planes', 6);
+    topo.n_sats_per_plane = readIntField('n_sats_per_plane', 11);
+    topo.altitude_km = readFloatField('altitude_km', '780.0');
+    topo.inclination_deg = readFloatField('inclination_deg', '86.4');
+    topo.isl_type = readStringField('isl_type', 'plus_grid');
+
+    if ($('raan_span_deg').value === '180.0') topo.raan_span_deg = '180.0';
+    const ph = readFloatField('phase_offset_deg', null, true);
+    if (ph !== null && !(typeof ph === 'string' && parseFloat(ph) === 0)) {
+      topo.phase_offset_deg = ph;
+    }
+  }
+
+  const intDefaults = { n_receivers_per_gs: 4, n_sources: 3, n_gsl_per_gs: 2 };
+  for (const k of Object.keys(intDefaults)) {
+    const el = $(k);
+    if (!el) continue;
+    const raw = el.value.trim();
+    if (raw === '') continue;
+    const v = readIntField(k, intDefaults[k]);
+    if (isSweep(v) || v !== intDefaults[k]) topo[k] = v;
+  }
+
+  const me = readFloatField('min_elevation_deg', null, true);
+  if (me !== null && me !== '5.0') topo.min_elevation_deg = me;
+
+  for (const k of ['isl_rate_bps', 'gsl_rate_bps',
+                   'user_radio_rate_bps', 'source_link_rate_bps']) {
+    const el = $(k);
+    if (!el) continue;
+    const v = el.value.trim();
+    if (v) {
+      if (v.startsWith('[')) {
+        const v2 = readFloatField(k, null, true);
+        if (v2 !== null) topo[k] = v2;
+      } else {
+        topo[k] = v;
+      }
+    }
+  }
+
+  const recvDist = $('receiver_distribution').value;
+  if (recvDist === 'uniform_global_safe') {
+    topo.receiver_distribution = 'uniform_global_safe';
+    const recvSeed = $('receiver_placement_seed').value.trim();
+    if (recvSeed) topo.receiver_placement_seed = parseInt(recvSeed, 10);
+    const latCap = readFloatField('receiver_lat_cap_deg', null, true);
+    if (latCap !== null && latCap !== '85.0') topo.receiver_lat_cap_deg = latCap;
+    const maxAtt = readIntField('receiver_max_attempts', 10);
+    if (isSweep(maxAtt) || maxAtt !== 10) topo.receiver_max_attempts = maxAtt;
+  }
+
+  const nameIsDyn = !isSweep(name) && typeof name === 'string'
+                    && name.startsWith('LEO_DYN');
+  const sweepHasDyn = isSweep(name)
+                      && name.values.some(v => v.startsWith('LEO_DYN'));
+  if (nameIsDyn || sweepHasDyn) {
+    topo.n_snapshots = readIntField('n_snapshots', 60);
+
+    const isDisabled = $('disable_handover').checked;
+    if (isDisabled) {
+      topo.handover_blackout_s = 0;
+    } else {
+
+      const source = $('handover_source').value;
+      if (source && source !== 'analytic') topo.handover_source = source;
+
+      const periodV = readFloatField('handover_period_s', null, true);
+      if (periodV !== null && source === 'analytic') {
+        topo.handover_period_s = periodV;
+      }
+      const dist = $('handover_blackout_distribution').value;
+      if (dist === 'uniform') {
+
+        topo.handover_blackout_distribution = 'uniform';
+        const minV = readFloatField('handover_blackout_min_s', null, true);
+        const maxV = readFloatField('handover_blackout_max_s', null, true);
+        if (minV !== null) topo.handover_blackout_min_s = minV;
+        if (maxV !== null) topo.handover_blackout_max_s = maxV;
+        const seedV = $('handover_blackout_seed').value.trim();
+        if (seedV) topo.handover_blackout_seed = parseInt(seedV, 10);
+      } else {
+
+        const ho = readFloatField('handover_blackout_s', null, true);
+        if (ho !== null && ho !== '0.05') topo.handover_blackout_s = ho;
+      }
+    }
+
+  }
+
+  const nameIsTLE = !isSweep(name) && typeof name === 'string'
+                    && name.endsWith('_TLE');
+  const sweepHasTLE = isSweep(name)
+                      && name.values.some(v => v.endsWith('_TLE'));
+  if (nameIsTLE || sweepHasTLE) {
+    const pt = $('propagation_time').value.trim();
+    if (pt) topo.propagation_time = pt;
+  }
+
+  if (!$('allow_gs_transit').checked) topo.allow_gs_transit = false;
+  return topo;
+}
+
+function collectWorkload() {
+  const w = {
+    name: readStringField('wl_name', 'STATIONARY_CHUNKED'),
+    n_contents: readIntField('wl_n_contents', 1000),
+  };
+
+  if (isSweep(w.name) || w.name === 'STATIONARY_CHUNKED') {
+    const nc = readIntField('wl_n_chunks', null, true);
+    if (nc !== null) w.n_chunks = nc;
+  }
+  w.alpha = readFloatField('wl_alpha', '1.0');
+  w.n_warmup = readIntField('wl_n_warmup', 1000);
+  w.n_measured = readIntField('wl_n_measured', 5000);
+  w.rate = readFloatField('wl_rate', '1.0');
+  const seed = readIntField('wl_seed', null, true);
+  if (seed !== null) w.seed = seed;
+  return w;
+}
+
+function collectCachePlacement() {
+  const out = {
+    name: readStringField('cp_name', 'UNIFORM'),
+    network_cache: readFloatField('cp_network_cache', '0.05'),
+  };
+  return out;
+}
+
+function collectContentPlacement() {
+  const out = { name: readStringField('contp_name', 'UNIFORM_CHUNKED') };
+  const s = $('contp_seed').value.trim();
+  if (s !== '') out.seed = parseInt(s, 10);
+  return out;
+}
+
+function collectCachePolicy() {
+  return { name: readStringField('cpolicy_name', 'LRU') };
+}
+
+function collectStrategy() {
+  const name = readStringField('strat_name', 'RETRY_LCD_LOSSY');
+  const s = { name: name };
+
+  const nameIsSwept = isSweep(name);
+  const nameIsRetry = !nameIsSwept && typeof name === 'string'
+                      && name.startsWith('RETRY_');
+  const sweepHasRetry = nameIsSwept
+                       && name.values.some(v => v.startsWith('RETRY_'));
+
+  if (nameIsRetry || sweepHasRetry) {
+    s.max_retries = readIntField('max_retries', 3);
+    s.retry_timeout_ms = readFloatField('retry_timeout_ms', '300.0');
+
+  }
+  const nameIsProb = !nameIsSwept && typeof name === 'string'
+                     && name.includes('PROB_CACHE');
+  const sweepHasProb = nameIsSwept
+                       && name.values.some(v => v.includes('PROB_CACHE'));
+  if (nameIsProb || sweepHasProb) {
+    s.t_tw = readIntField('t_tw', 10);
+  }
+
+  const csb = readIntField('wl_chunk_size_bytes', null, true);
+  if (csb !== null) s.content_size_bytes = csb;
+
+  const loss = collectLossModel();
+  if (loss !== null) s.loss_model = loss;
+
+  return s;
+}
+
+function handoverIsActive() {
+  const topoName = $('topo_name').value || '';
+  if (!topoName.startsWith('LEO_DYN')) return false;
+  const nSnap = parseInt($('n_snapshots').value, 10);
+  if (!(nSnap > 1)) return false;
+  if ($('disable_handover').checked) return false;
+  const raw = ($('handover_blackout_s').value || '').trim();
+  if (raw.startsWith('[')) return true;
+  const d = parseFloat(raw);
+  return !isNaN(d) && d > 0;
+}
+
+let LOSS_NONE_SUBSTITUTED = false;
+
+function updateLossNoneHint() {
+  const el = $('loss_none_hint');
+  if (!el) return;
+  if ($('loss_name').value === 'NONE' && handoverIsActive()) {
+    el.className = 'hint hint-warn';
+    el.textContent = '⚠ NONE with handover active: the handover blackout is '
+      + 'applied by the loss model, so without one it would never take effect. '
+      + 'A BERNOULLI model with all BERs = 0 (no channel loss) is emitted to '
+      + 'carry the blackout.';
+  } else {
+    el.className = 'hint';
+    el.textContent = '';
+  }
+}
+
+function updateSeedHint() {
+  const el = $('seed_hint');
+  if (!el) return;
+  const SEEDS = [
+    ['topo_seed', 'topology.seed'],
+    ['receiver_placement_seed', 'topology.receiver_placement_seed'],
+    ['wl_seed', 'workload.seed'],
+    ['contp_seed', 'content_placement.seed'],
+    ['loss_seed', 'loss_model.seed'],
+  ];
+  const missing = SEEDS.filter(([id]) => {
+    const e = $(id);
+    return e && e.value.trim() === '';
+  }).map(([, label]) => label);
+  if (missing.length) {
+    el.className = 'hint hint-warn';
+    el.textContent = '\u26a0 Seeds not set: ' + missing.join(', ')
+      + '. Without a seed the random generator starts from system entropy and '
+      + 'the simulation is NOT reproducible (different runs give different results).';
+  } else {
+    el.className = 'hint';
+    el.textContent = '';
+  }
+}
+
+function collectLossModel() {
+  const nameRaw = $('loss_name').value;
+  if (nameRaw === 'NONE') {
+
+    if (handoverIsActive()) {
+      LOSS_NONE_SUBSTITUTED = true;
+      const sub = {
+        name: 'BERNOULLI',
+        ber_gsl: 0, ber_isl: 0, ber_access: 0, ber_user_radio: 0,
+      };
+
+      const sd = readIntField('loss_seed', null, true);
+      if (sd !== null) sub.seed = sd;
+      return sub;
+    }
+    LOSS_NONE_SUBSTITUTED = false;
+    return null;
+  }
+  LOSS_NONE_SUBSTITUTED = false;
+
+  const name = readStringField('loss_name', nameRaw);
+
+  const m = { name: name };
+  const nameIsBern = name === 'BERNOULLI';
+  const nameIsGE = name === 'GILBERT_ELLIOTT';
+  const sweepHasBern = isSweep(name) && name.values.includes('BERNOULLI');
+  const sweepHasGE = isSweep(name) && name.values.includes('GILBERT_ELLIOTT');
+
+  if (nameIsBern || sweepHasBern) {
+    m.ber_gsl = readFloatField('bern_ber_gsl', '1e-6');
+    m.ber_isl = readFloatField('bern_ber_isl', '1e-7');
+    m.ber_access = readFloatField('bern_ber_access', '1e-9');
+    const ur = readFloatField('bern_ber_user_radio', null, true);
+    if (ur !== null) m.ber_user_radio = ur;
+  }
+  if (nameIsGE || sweepHasGE) {
+    m.p_gb = readFloatField('ge_p_gb', '0.02');
+    m.p_bg = readFloatField('ge_p_bg', '0.15');
+    m.ber_good = readFloatField('ge_ber_good', '1e-8');
+    m.ber_bad = readFloatField('ge_ber_bad', '1e-4');
+    const perLinkKeys = [
+      'ber_good_gsl', 'ber_bad_gsl',
+      'ber_good_isl', 'ber_bad_isl',
+      'ber_good_access', 'ber_bad_access',
+      'ber_good_user_radio', 'ber_bad_user_radio',
+    ];
+    for (const k of perLinkKeys) {
+      const v = readFloatField('ge_' + k, null, true);
+      if (v !== null) m[k] = v;
+    }
+
+    if ($('ge_handover_forces_bad').checked) m.handover_forces_bad = true;
+  }
+  const nameIsComp = name === 'COMPOSITE';
+  if (nameIsComp) {
+    const per = {};
+    for (const lt of COMPOSITE_LINK_TYPES) {
+      const sub = collectCompositeSub(lt);
+      if (sub && sub.name !== 'NONE') {
+        per[lt] = sub;
+      }
+    }
+    if (Object.keys(per).length > 0) {
+      m.per_link_type = per;
+    }
+
+  }
+  const seed = readIntField('loss_seed', null, true);
+
+  if (seed !== null && !nameIsComp) m.seed = seed;
+  return m;
+}
+
+function collectCollectors() {
+  return Array.from(
+    document.querySelectorAll('#collectors input[type=checkbox]'))
+    .filter(cb => cb.checked)
+    .map(cb => cb.value);
+}
+
+function renderExperiment(exp, indent) {
+  indent = indent || '';
+  const lines = [];
+  lines.push(indent + "experiment = Tree()");
+  lines.push(indent + "experiment['topology'] = " +
+             pyValue(exp.topology, indent));
+  lines.push(indent + "experiment['workload'] = " +
+             pyValue(exp.workload, indent));
+  lines.push(indent + "experiment['cache_placement'] = " +
+             pyValue(exp.cache_placement, indent));
+  lines.push(indent + "experiment['content_placement'] = " +
+             pyValue(exp.content_placement, indent));
+  lines.push(indent + "experiment['cache_policy'] = " +
+             pyValue(exp.cache_policy, indent));
+  if (LOSS_NONE_SUBSTITUTED) {
+    lines.push(indent + "# NOTE: loss model NONE was selected, but a handover "
+               + "blackout is active.");
+    lines.push(indent + "# The blackout is applied by the loss model, "
+               + "so with no loss model");
+    lines.push(indent + "# it would never be applied. A lossless "
+               + "Bernoulli (all BER=0) is");
+    lines.push(indent + "# emitted instead: it carries the handover blackout "
+               + "and adds no channel loss.");
+  }
+  lines.push(indent + "experiment['strategy'] = " +
+             pyValue(exp.strategy, indent));
+
+  const axes = enumerateSweeps(exp);
+  if (axes.length > 0) {
+    const suffixParts = axes.map(ax => {
+      const tag = ax.axis.replace(/[^a-zA-Z0-9_]/g, '_');
+      return `${tag}={` + ax._varName + `}`;
+    });
+    const fstring = pyStr(exp.desc) + ' + ' +
+                    "f' [" + suffixParts.join(', ') + "]'";
+    lines.push(indent + "experiment['desc'] = " + fstring);
+  } else {
+    lines.push(indent + "experiment['desc'] = " + pyStr(exp.desc));
+  }
+  lines.push(indent + "EXPERIMENT_QUEUE.append(experiment)");
+  return lines.join('\n');
+}
+
+function axisVarName(axisId) {
+  return '_' + String(axisId).replace(/[^a-zA-Z0-9_]/g, '_') + '_v';
+}
+
+function renderConfig() {
+
+  let exp, axes, err = null;
+  try {
+    const desc = $('desc').value;
+    exp = {
+      topology: collectTopology(),
+      workload: collectWorkload(),
+      cache_placement: collectCachePlacement(),
+      content_placement: collectContentPlacement(),
+      cache_policy: collectCachePolicy(),
+      strategy: collectStrategy(),
+      desc: desc,
+    };
+
+    axes = enumerateSweeps(exp);
+
+    for (const ax of axes) {
+      ax._varName = axisVarName(ax.axis);
+    }
+
+    function _injectVarNames(node, axesMap) {
+      if (isSweep(node)) {
+        node._varName = axesMap[node.axis];
+        return;
+      }
+      if (node === null || typeof node !== 'object') return;
+      for (const k of Object.keys(node)) _injectVarNames(node[k], axesMap);
+    }
+    const axesMap = {};
+    for (const ax of axes) axesMap[ax.axis] = ax._varName;
+    _injectVarNames(exp, axesMap);
+  } catch (e) {
+    err = e.message;
+
+    return '# ERROR: ' + err + '\n# Fix the malformed array literal '
+           + 'and the preview will refresh.';
+  }
+
+  const logLevel = $('log_level').value;
+  const parallel = $('parallel').value;
+  const nproc = parseInt($('n_processes').value, 10);
+  const collectors = collectCollectors();
+  const filename = $('filename').value || 'config.py';
+  const fnoExt = filename.replace(/\.py$/, '');
+
+  const total = totalExperiments(axes);
+  const isSweepConfig = axes.length > 0;
+
+  const headerLines = [
+    `"""Generated by ICARUS-LEO config builder.`,
+    ``,
+    `Experiment: ${$('desc').value}`,
+  ];
+  if (isSweepConfig) {
+    headerLines.push(``);
+    headerLines.push(`Sweep axes (${axes.length}):`);
+    for (const ax of axes) {
+      const src = ax.rawValues || ax.values.map(v => JSON.stringify(v));
+      const preview = src.slice(0, 4).join(', ');
+      const more = src.length > 4
+                   ? `, ... (${src.length} values)` : '';
+      headerLines.push(`  - ${ax.path}: [${preview}${more}]`);
+    }
+    headerLines.push(``);
+    headerLines.push(`Total experiments: ${total}`);
+  }
+  headerLines.push(``);
+  headerLines.push(`If you have the simulator engine, run:`);
+  headerLines.push(`    icarus run -r results_${fnoExt}.pickle ${filename}`);
+  headerLines.push(`and generate the interactive viewer with:`);
+  headerLines.push(`    python3 tools/generate_log_viewer.py results_${fnoExt}.pickle \\`);
+  headerLines.push(`        -o viewer_${fnoExt}.html --n-viewable 1000`);
+  headerLines.push(``);
+  headerLines.push(`Otherwise, see https://github.com/gcampobello/ICARUS-LEO`);
+  headerLines.push(`for how to have it run.`);
+  headerLines.push(`"""`);
+  headerLines.push(`from icarus.util import Tree`);
+  if (isSweepConfig) {
+    headerLines.push(`import itertools`);
+  }
+  headerLines.push(``);
+  headerLines.push(`LOG_LEVEL = ${pyStr(logLevel)}`);
+  headerLines.push(`PARALLEL_EXECUTION = ${pyBool(parallel)}`);
+  if (parallel === 'True') headerLines.push(`N_PROCESSES = ${nproc}`);
+  headerLines.push(`N_REPLICATIONS = 1`);
+  headerLines.push(`RESULTS_FORMAT = 'PICKLE'`);
+  headerLines.push(``);
+  headerLines.push(`DATA_COLLECTORS = [${collectors.map(pyStr).join(', ')}]`);
+  headerLines.push(``);
+  headerLines.push(`EXPERIMENT_QUEUE = []`);
+  headerLines.push(``);
+
+  if (!isSweepConfig) {
+    headerLines.push(`# --- Single experiment ---`);
+    headerLines.push(renderExperiment(exp, ''));
+  } else {
+    headerLines.push(`# --- Sweep: ${total} experiments ` +
+                     `(${axes.map(a => a.values.length).join(' x ')}) ---`);
+
+    for (const ax of axes) {
+      let vals;
+      if (ax.rawValues) {
+
+        vals = ax.rawValues.join(', ');
+      } else {
+        vals = ax.values.map(v => {
+          if (typeof v === 'string') return pyStr(v);
+          if (typeof v === 'boolean') return v ? 'True' : 'False';
+          return String(v);
+        }).join(', ');
+      }
+      headerLines.push(`${ax._varName + 'als'} = [${vals}]`);
+    }
+    headerLines.push(``);
+
+    const loopVars = axes.map(ax => ax._varName).join(', ');
+    const loopLists = axes.map(ax => ax._varName + 'als').join(', ');
+    headerLines.push(
+      `for ${loopVars}${axes.length > 1 ? '' : ','} in itertools.product(${loopLists}):`);
+
+    headerLines.push(renderExperiment(exp, '    '));
+  }
+  headerLines.push(``);
+
+  return headerLines.join('\n');
+}
+
+function updateSweepHighlights() {
+
+  const sweepAxes = [];
+  const errors = [];
+
+  const inputs = document.querySelectorAll(
+    '.tab-panel input[type="text"], .tab-panel input[type="number"]');
+  for (const el of inputs) {
+    el.classList.remove('sweep-active', 'sweep-error');
+
+    const errEl = el.parentElement
+                    && el.parentElement.querySelector('.sweep-error-msg');
+    if (errEl) errEl.remove();
+
+    const raw = el.value.trim();
+    if (raw === '') continue;
+
+    if (raw.startsWith('[')) {
+      let parsed;
+      try { parsed = JSON.parse(raw); }
+      catch (e) {
+        el.classList.add('sweep-error');
+        errors.push(el.id + ': malformed array');
+        const msg = document.createElement('div');
+        msg.className = 'sweep-error-msg';
+        msg.textContent = 'malformed JSON array';
+        if (el.parentElement) el.parentElement.appendChild(msg);
+        continue;
+      }
+      if (!Array.isArray(parsed) || parsed.length === 0) {
+        el.classList.add('sweep-error');
+        errors.push(el.id + ': not an array or empty');
+        continue;
+      }
+      el.classList.add('sweep-active');
+      sweepAxes.push({id: el.id, count: parsed.length});
+      continue;
+    }
+
+    if (!el.classList.contains('sweepable')) continue;
+
+    const isValidNumber = /^-?\d+(\.\d+)?([eE][+-]?\d+)?$/.test(raw);
+    if (!isValidNumber) {
+      el.classList.add('sweep-error');
+      errors.push(el.id + ': not a valid number');
+      const msg = document.createElement('div');
+      msg.className = 'sweep-error-msg';
+
+      if (/^-?\d+,\d+/.test(raw)) {
+        msg.textContent = 'use "." as decimal separator (not ",")';
+      } else {
+        msg.textContent = 'not a valid number';
+      }
+      if (el.parentElement) el.parentElement.appendChild(msg);
+    }
+  }
+
+  const banner = $('sweep_banner');
+  const countEl = $('exp_count');
+  const summaryEl = $('axes_summary');
+  if (!banner || !countEl) return;
+
+  banner.classList.remove('sweep-active', 'sweep-error', 'sweep-warning');
+
+  if (errors.length > 0) {
+    banner.classList.add('sweep-error');
+    countEl.textContent = `${errors.length} error${errors.length > 1 ? 's' : ''}`;
+    summaryEl.textContent = errors.join('  •  ');
+    return;
+  }
+
+  const nMeasured = readIntField('wl_n_measured', null, true) || 0;
+  const nChunks = readIntField('wl_n_chunks', null, true) || 1;
+  const sessPerExp = nMeasured * (nChunks > 0 ? nChunks : 1);
+
+  if (sweepAxes.length === 0) {
+    countEl.textContent = '1 experiment';
+    summaryEl.textContent = sessPerExp > 0
+      ? `~${sessPerExp.toLocaleString()} sessions in pickle`
+      : '(no sweep)';
+    return;
+  }
+
+  banner.classList.add('sweep-active');
+  const total = sweepAxes.reduce((acc, ax) => acc * ax.count, 1);
+  const counts = sweepAxes.map(ax => ax.count).join(' × ');
+  countEl.textContent = `${total} experiment${total > 1 ? 's' : ''}`;
+  const totSess = sessPerExp * total;
+  const sweepTxt = sweepAxes.length === 1
+    ? `Sweep on ${sweepAxes[0].id} (${counts})`
+    : `Sweep on ${sweepAxes.length} axes (${counts})`;
+  summaryEl.textContent = sessPerExp > 0
+    ? `${sweepTxt}  •  ~${totSess.toLocaleString()} sessions in pickle`
+    : sweepTxt;
+
+  if (total > 50) {
+    banner.classList.remove('sweep-active');
+    banner.classList.add('sweep-warning');
+  }
+}
+
+function toggleHandoverSourceSubforms() {
+
+  const source = $('handover_source').value;
+  const isAnalytic = (source === 'analytic');
+  $('lbl_handover_period_s').style.display = isAnalytic ? '' : 'none';
+}
+
+function refresh() {
+  toggleTopologySubforms();
+  toggleHandoverBlackoutSubforms();
+  toggleHandoverSourceSubforms();
+  applyDisableHandoverVisualState();
+  toggleReceiverPlacementSubforms();
+  toggleParallel();
+  toggleWorkloadChunks();
+  toggleStrategySubforms();
+  toggleLossSubforms();
+  updateSweepHighlights();
+  updateCacheSizeHint();
+  updateSnapshotDeltaHint();
+  updateLossNoneHint();
+  updateSeedHint();
+  $('output').value = renderConfig();
+  const fn = $('filename').value.replace(/^config_|\.py$/g, '');
+  $('output_filename_label').textContent = fn || '???';
+}
+
+function updateCacheSizeHint() {
+  const hintEl = $('cache_size_hint');
+  if (!hintEl) return;
+
+  const nContentsRaw = $('wl_n_contents').value.trim();
+  const cacheRaw = $('cp_network_cache').value.trim();
+  if (nContentsRaw.startsWith('[') || cacheRaw.startsWith('[')) {
+    hintEl.textContent = '';
+    return;
+  }
+  const nContents = parseFloat(nContentsRaw);
+  const cacheFrac = parseFloat(cacheRaw);
+  if (isNaN(nContents) || isNaN(cacheFrac) || cacheFrac <= 0) {
+    hintEl.textContent = '';
+    return;
+  }
+
+  const topoName = $('topo_name').value;
+  let nRouters;
+  if (topoName.includes('STARLINK_MINI')) {
+    nRouters = 132;
+  } else if (topoName.includes('IRIDIUM')) {
+    nRouters = 66;
+  } else if (topoName === 'LEO' || topoName === 'LEO_DYN') {
+    const nPlanes = parseInt($('n_planes').value, 10) || 6;
+    const nSats = parseInt($('n_sats_per_plane').value, 10) || 11;
+    nRouters = nPlanes * nSats;
+  } else {
+    hintEl.textContent = '';
+    return;
+  }
+
+  const totalCache = nContents * cacheFrac;
+  const perRouter = totalCache / nRouters;
+
+  if (perRouter < 1) {
+
+    hintEl.style.color = '#C62828';
+    hintEl.innerHTML = `&#9888; estimated cache: ${totalCache.toFixed(0)} units / `
+      + `${nRouters} satellites &asymp; ${perRouter.toFixed(2)} per satellite. `
+      + `Icarus will force size=1 (triggers warning, may distort results). `
+      + `Suggest n_contents&times;network_cache &ge; ${nRouters}.`;
+  } else {
+    hintEl.style.color = '#558B2F';
+    hintEl.innerHTML = `&#10003; estimated cache: ${totalCache.toFixed(0)} units / `
+      + `${nRouters} satellites &asymp; ${perRouter.toFixed(1)} per satellite`;
+  }
+}
+
+function _visibilityWindowSeconds(altKm, minElevDeg) {
+  const R_E = 6378.137, MU = 3.986e14;
+  const a_m = (R_E + altKm) * 1000;
+  const v = Math.sqrt(MU / a_m);
+  const elev = minElevDeg * Math.PI / 180;
+  const rho = Math.acos(R_E * Math.cos(elev) / (R_E + altKm)) - elev;
+  return 2 * rho * (R_E + altKm) * 1000 / v;
+}
+
+function computeAutoSimDuration() {
+  function _scalarOrMax(rawStr) {
+    const v = rawStr.trim();
+    if (!v) return null;
+    if (v.startsWith('[')) {
+      try {
+        const arr = JSON.parse(v);
+        if (Array.isArray(arr) && arr.length > 0) {
+          return Math.max(...arr.map(parseFloat).filter(x => !isNaN(x)));
+        }
+      } catch (e) { return null; }
+      return null;
+    }
+    const n = parseFloat(v);
+    return isNaN(n) ? null : n;
+  }
+  function _scalarOrMin(rawStr) {
+    const v = rawStr.trim();
+    if (!v) return null;
+    if (v.startsWith('[')) {
+      try {
+        const arr = JSON.parse(v);
+        if (Array.isArray(arr) && arr.length > 0) {
+          return Math.min(...arr.map(parseFloat).filter(x => !isNaN(x)));
+        }
+      } catch (e) { return null; }
+      return null;
+    }
+    const n = parseFloat(v);
+    return isNaN(n) ? null : n;
+  }
+
+  const nWarmupEl = $('wl_n_warmup');
+  const nMeasuredEl = $('wl_n_measured');
+  const rateEl = $('wl_rate');
+  if (!nWarmupEl || !nMeasuredEl || !rateEl) return null;
+
+  const nWarmup = _scalarOrMax(nWarmupEl.value);
+  const nMeasured = _scalarOrMax(nMeasuredEl.value);
+  const rate = _scalarOrMin(rateEl.value);
+  if (nWarmup === null || nMeasured === null || rate === null || rate <= 0) {
+    return null;
+  }
+  return 1.2 * (nWarmup + nMeasured) / rate;
+}
+
+function updateSnapshotDeltaHint() {
+  const hintEl = $('n_snapshots_dt_hint');
+  if (!hintEl) return;
+
+  hintEl.className = 'hint';
+  hintEl.textContent = '';
+
+  const topoName = $('topo_name').value;
+  if (typeof topoName !== 'string' || !topoName.startsWith('LEO_DYN')) return;
+
+  const nSnapRaw = $('n_snapshots').value.trim();
+  if (!nSnapRaw) return;
+  const nSnap = parseFloat(nSnapRaw);
+  if (isNaN(nSnap) || nSnap < 1) return;
+
+  let altKm = null, minElev = 8.0;
+  if (topoName === 'LEO_DYN_IRIDIUM') {
+    altKm = 781;
+  } else if (topoName === 'LEO_DYN_STARLINK_MINI') {
+    altKm = 550;
+  } else if (topoName === 'LEO_DYN') {
+
+    const altField = $('altitude_km');
+    if (altField && altField.value.trim()) {
+      altKm = parseFloat(altField.value);
+    }
+  }
+  const elField = $('min_elevation_deg');
+  if (elField && elField.value.trim() && !isNaN(parseFloat(elField.value))) {
+    minElev = parseFloat(elField.value);
+  }
+  if (altKm === null || isNaN(altKm)) return;
+
+  const W = _visibilityWindowSeconds(altKm, minElev);
+
+  const R_E = 6378.137, MU = 3.986e14;
+  const a_m = (R_E + altKm) * 1000;
+  const T_orb = 2 * Math.PI * Math.sqrt(a_m * a_m * a_m / MU);
+
+  const nSnapSafe = Math.ceil(T_orb / (W / 10));
+  hintEl.textContent = `(orbital period ≈ ${T_orb.toFixed(0)} s, minimum n_snapshots => ${nSnapSafe})`;
+}
+
+function downloadConfig() {
+  const text = $('output').value;
+  const filename = $('filename').value || 'config.py';
+  const blob = new Blob([text], { type: 'text/x-python;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+const HANDLED_ELSEWHERE = 'handled-elsewhere';
+
+let LOAD_DROPPED = [];
+let LOAD_IGNORED = [];
+
+const SECTION_KEY_TO_FIELD = {
+  'topology': {
+    'name':              {id: 'topo_name', type: 'select'},
+    'seed':              {id: 'topo_seed', type: 'text'},
+    'allow_gs_transit':  {id: 'allow_gs_transit', type: 'checkbox'},
+    'n_planes':          {id: 'n_planes', type: 'text'},
+    'n_sats_per_plane':  {id: 'n_sats_per_plane', type: 'text'},
+    'raan_span_deg':     {id: 'raan_span_deg', type: 'select'},
+    'phase_offset_deg':  {id: 'phase_offset_deg', type: 'text'},
+    'altitude_km':       {id: 'altitude_km', type: 'text'},
+    'inclination_deg':   {id: 'inclination_deg', type: 'text'},
+    'n_receivers_per_gs':{id: 'n_receivers_per_gs', type: 'text'},
+    'n_sources':         {id: 'n_sources', type: 'text'},
+    'n_gsl_per_gs':      {id: 'n_gsl_per_gs', type: 'text'},
+    'min_elevation_deg': {id: 'min_elevation_deg', type: 'text'},
+    'isl_rate_bps':      {id: 'isl_rate_bps', type: 'text'},
+    'gsl_rate_bps':      {id: 'gsl_rate_bps', type: 'text'},
+    'user_radio_rate_bps':{id: 'user_radio_rate_bps', type: 'text'},
+    'source_link_rate_bps':{id: 'source_link_rate_bps', type: 'text'},
+    'isl_type':          {id: 'isl_type', type: 'select'},
+    'receiver_distribution':{id: 'receiver_distribution', type: 'select'},
+    'receiver_placement_seed':{id: 'receiver_placement_seed', type: 'text'},
+    'receiver_lat_cap_deg':{id: 'receiver_lat_cap_deg', type: 'text'},
+    'receiver_max_attempts':{id: 'receiver_max_attempts', type: 'text'},
+    'n_snapshots':       {id: 'n_snapshots', type: 'text'},
+    'handover_blackout_s':{id: 'handover_blackout_s', type: 'text'},
+    'handover_blackout_distribution':{id: 'handover_blackout_distribution', type: 'select'},
+    'handover_blackout_min_s':{id: 'handover_blackout_min_s', type: 'text'},
+    'handover_blackout_max_s':{id: 'handover_blackout_max_s', type: 'text'},
+    'handover_blackout_seed':{id: 'handover_blackout_seed', type: 'text'},
+    'handover_source':{id: 'handover_source', type: 'select'},
+    'handover_period_s':{id: 'handover_period_s', type: 'text'},
+    'propagation_time':  {id: 'propagation_time', type: 'text'},
+    'simulation_duration_s':null,
+  },
+  'workload': {
+    'name':         {id: 'wl_name', type: 'select'},
+    'n_contents':   {id: 'wl_n_contents', type: 'text'},
+    'n_chunks':     {id: 'wl_n_chunks', type: 'text'},
+    'alpha':        {id: 'wl_alpha', type: 'text'},
+    'n_warmup':     {id: 'wl_n_warmup', type: 'text'},
+    'n_measured':   {id: 'wl_n_measured', type: 'text'},
+    'rate':         {id: 'wl_rate', type: 'text'},
+    'seed':         {id: 'wl_seed', type: 'text'},
+  },
+  'cache_placement': {
+    'name':          {id: 'cp_name', type: 'select'},
+    'network_cache': {id: 'cp_network_cache', type: 'text'},
+    'seed':          null,
+  },
+  'content_placement': {
+    'name': {id: 'contp_name', type: 'select'},
+    'seed': {id: 'contp_seed', type: 'text'},
+  },
+  'cache_policy': {
+    'name': {id: 'cpolicy_name', type: 'select'},
+  },
+  'strategy': {
+    'name':                {id: 'strat_name', type: 'select'},
+    'max_retries':         {id: 'max_retries', type: 'text'},
+    'retry_timeout_ms':    {id: 'retry_timeout_ms', type: 'text'},
+    'loss_model':          HANDLED_ELSEWHERE,
+    'link_rate_bps':       null,
+    't_tw':                {id: 't_tw', type: 'text'},
+    'serialization':       null,
+    'content_size_bytes':  {id: 'wl_chunk_size_bytes', type: 'text'},
+  },
+
+};
+
+const LOSS_MODEL_KEY_TO_FIELD = {
+  'name':                 {id: 'loss_name', type: 'select'},
+  'seed':                 {id: 'loss_seed', type: 'text'},
+
+  'ber_gsl':              {id: 'bern_ber_gsl', type: 'text'},
+  'ber_isl':              {id: 'bern_ber_isl', type: 'text'},
+  'ber_access':           {id: 'bern_ber_access', type: 'text'},
+  'ber_user_radio':       {id: 'bern_ber_user_radio', type: 'text'},
+
+  'p_gb':                 {id: 'ge_p_gb', type: 'text'},
+  'p_bg':                 {id: 'ge_p_bg', type: 'text'},
+  'ber_good':             {id: 'ge_ber_good', type: 'text'},
+  'ber_bad':              {id: 'ge_ber_bad', type: 'text'},
+  'ber_good_gsl':         {id: 'ge_ber_good_gsl', type: 'text'},
+  'ber_bad_gsl':          {id: 'ge_ber_bad_gsl', type: 'text'},
+  'ber_good_isl':         {id: 'ge_ber_good_isl', type: 'text'},
+  'ber_bad_isl':          {id: 'ge_ber_bad_isl', type: 'text'},
+  'ber_good_access':      {id: 'ge_ber_good_access', type: 'text'},
+  'ber_bad_access':       {id: 'ge_ber_bad_access', type: 'text'},
+  'ber_good_user_radio':  {id: 'ge_ber_good_user_radio', type: 'text'},
+  'ber_bad_user_radio':   {id: 'ge_ber_bad_user_radio', type: 'text'},
+  'handover_forces_bad':  {id: 'ge_handover_forces_bad', type: 'checkbox'},
+};
+
+function extractPythonValue(text) {
+  text = text.trim();
+
+  if (text.endsWith(',')) text = text.slice(0, -1).trim();
+  return text;
+}
+
+function pythonValueToFieldString(pyExpr) {
+  pyExpr = pyExpr.trim();
+
+  const sMatch = pyExpr.match(/^['"](.+)['"]$/);
+  if (sMatch) return sMatch[1];
+
+  return pyExpr;
+}
+
+function parseDictBody(body) {
+  const result = {};
+
+  const lines = body.split('\n');
+  let buffer = '';
+  let inNested = 0;
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    buffer += (buffer ? ' ' : '') + trimmed;
+
+    for (const ch of trimmed) {
+      if (ch === '{') inNested++;
+      else if (ch === '}') inNested--;
+    }
+    if (inNested > 0) continue;
+
+    const m = buffer.match(/^['"]([a-z_0-9]+)['"]\s*:\s*(.*?)(,\s*)?$/);
+    if (m) {
+      const key = m[1];
+      let raw = m[2].trim();
+      if (raw.endsWith(',')) raw = raw.slice(0, -1).trim();
+
+      const sweepMatch = raw.match(/^_[a-z_0-9]+_v$/);
+      if (sweepMatch) {
+        result[key] = {sweep: true, varName: raw};
+      } else {
+        result[key] = raw;
+      }
+    }
+    buffer = '';
+  }
+  return result;
+}
+
+function parseInlineFlatDict(body) {
+  const result = {};
+  const s = body.trim();
+  let i = 0;
+  while (i < s.length) {
+
+    while (i < s.length && /[\s,]/.test(s[i])) i++;
+    if (i >= s.length) break;
+
+    const kq = s[i];
+    if (kq !== "'" && kq !== '"') break;
+    const kEnd = s.indexOf(kq, i + 1);
+    if (kEnd < 0) break;
+    const key = s.slice(i + 1, kEnd);
+    i = kEnd + 1;
+
+    while (i < s.length && /[\s:]/.test(s[i])) i++;
+
+    let value;
+    if (s[i] === "'" || s[i] === '"') {
+      const vq = s[i];
+      const vEnd = s.indexOf(vq, i + 1);
+      value = s.slice(i + 1, vEnd);
+      i = vEnd + 1;
+    } else if (s[i] === '{') {
+      let depth = 1, j = i + 1;
+      while (j < s.length && depth > 0) {
+        if (s[j] === '{') depth++;
+        else if (s[j] === '}') depth--;
+        j++;
+      }
+      value = s.slice(i + 1, j - 1);
+      i = j;
+    } else if (s[i] === '[') {
+      let depth = 1, j = i + 1;
+      while (j < s.length && depth > 0) {
+        if (s[j] === '[') depth++;
+        else if (s[j] === ']') depth--;
+        j++;
+      }
+      value = s.slice(i, j);
+      i = j;
+    } else {
+
+      let j = i;
+      while (j < s.length && !/[,\s}]/.test(s[j])) j++;
+      value = s.slice(i, j);
+      i = j;
+    }
+    result[key] = value;
+  }
+  return result;
+}
+
+function applyCompositePerLink(perLinkRaw) {
+  if (typeof perLinkRaw !== 'string') return;
+  let inner = perLinkRaw.trim();
+  if (inner.startsWith('{')) inner = inner.slice(1);
+  if (inner.endsWith('}')) inner = inner.slice(0, -1);
+  const perLinkDict = parseInlineFlatDict(inner);
+  for (const lt of Object.keys(perLinkDict)) {
+    const subBody = perLinkDict[lt];
+    if (typeof subBody !== 'string') continue;
+    const subDict = parseInlineFlatDict(subBody);
+    const pick = $('comp_' + lt + '_name');
+    if (!pick) continue;
+    if (subDict.name) {
+      pick.value = subDict.name;
+    }
+    if (subDict.name === 'BERNOULLI') {
+
+      const bernKey = COMPOSITE_BERN_PARAM[lt];
+      const berInput = $('comp_' + lt + '_bern_ber');
+      if (berInput && bernKey && subDict[bernKey] !== undefined) {
+        berInput.value = subDict[bernKey];
+      }
+      const seedInput = $('comp_' + lt + '_bern_seed');
+      if (seedInput && subDict.seed !== undefined) seedInput.value = subDict.seed;
+    } else if (subDict.name === 'GILBERT_ELLIOTT') {
+      const geParams = ['p_gb', 'p_bg', 'ber_good', 'ber_bad', 'seed'];
+      for (const p of geParams) {
+        const input = $('comp_' + lt + '_ge_' + p);
+        if (input && subDict[p] !== undefined) input.value = subDict[p];
+      }
+    } else if (subDict.name === 'TRACE') {
+      const pathInput = $('comp_' + lt + '_trace_path');
+
+      const tp = (subDict.trace_npz_path !== undefined) ? subDict.trace_npz_path : subDict.path;
+      if (pathInput && tp !== undefined) pathInput.value = tp;
+      const seedInput = $('comp_' + lt + '_trace_seed');
+      if (seedInput && subDict.seed !== undefined) seedInput.value = subDict.seed;
+    }
+
+    toggleCompositeBlock(lt);
+  }
+}
+
+function parseExperimentSections(text) {
+  const sections = {};
+
+  const re = /experiment\['([a-z_]+)'\]\s*=\s*\{/g;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    const section = m[1];
+    const start = m.index + m[0].length;
+
+    let depth = 1;
+    let i = start;
+    while (i < text.length && depth > 0) {
+      if (text[i] === '{') depth++;
+      else if (text[i] === '}') depth--;
+      i++;
+    }
+    if (depth !== 0) {
+      throw new Error(`Unbalanced braces in section '${section}'`);
+    }
+    const body = text.slice(start, i - 1);
+    sections[section] = body;
+  }
+
+  const descMatch = text.match(/experiment\['desc'\]\s*=\s*(.+?)\n/);
+  if (descMatch) {
+    sections['desc'] = descMatch[1].trim();
+  }
+  return sections;
+}
+
+function parseSweepLists(text) {
+  const sweeps = {};
+
+  const re = /^(\s*)(_[a-z_0-9]+)_vals\s*=\s*(\[.*?\])\s*$/gm;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    const base = m[2];
+    const arrStr = m[3];
+    sweeps[base + '_v'] = pythonArrayToJsonArray(arrStr);
+  }
+  return sweeps;
+}
+
+function pythonArrayToJsonArray(arrStr) {
+
+  let json = arrStr.replace(/'([^']*)'/g, '"$1"');
+
+  json = json.replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false');
+
+  json = json.replace(/\bNone\b/g, 'null');
+  return json;
+}
+
+function applySection(sectionName, dict, sweeps) {
+  const map = SECTION_KEY_TO_FIELD[sectionName];
+  if (!map) return;
+  for (const key of Object.keys(dict)) {
+    const fieldInfo = map[key];
+    if (fieldInfo === HANDLED_ELSEWHERE) continue;
+    if (fieldInfo === null) { LOAD_IGNORED.push(sectionName + '.' + key); continue; }
+    if (!fieldInfo) {
+
+      LOAD_DROPPED.push(sectionName + '.' + key);
+      console.warn('[config_builder] unmapped key, value NOT restored on load: '
+                   + sectionName + '.' + key);
+      continue;
+    }
+    const value = dict[key];
+    let toSet;
+    if (typeof value === 'object' && value.sweep) {
+
+      const arrStr = sweeps[value.varName];
+      if (arrStr === undefined) {
+        console.warn(`Sweep var ${value.varName} not found in _vals lists`);
+        continue;
+      }
+      toSet = arrStr;
+    } else {
+      toSet = pythonValueToFieldString(value);
+    }
+    setFormField(fieldInfo, toSet);
+  }
+}
+
+function setFormField(fieldInfo, value) {
+  const el = $(fieldInfo.id);
+  if (!el) {
+    console.warn('Field not found:', fieldInfo.id);
+    return;
+  }
+  if (fieldInfo.type === 'checkbox') {
+
+    const el = $(fieldInfo.id);
+    if (el) el.checked = (String(value).trim() === 'True' || value === true);
+    return;
+  }
+  if (fieldInfo.type === 'select') {
+
+    if (value.startsWith('[')) {
+      const sweepEl = $(fieldInfo.id + '_sweep');
+      if (sweepEl) {
+        sweepEl.value = value;
+      } else {
+        console.warn(`Sweep on select ${fieldInfo.id} but no sibling _sweep input`);
+      }
+    } else {
+
+      const prev = el.value;
+      el.value = value;
+      if (el.value !== value) {
+
+        const num = parseFloat(value);
+        const match = isNaN(num) ? null
+          : [...el.options].find(o => parseFloat(o.value) === num);
+        if (match) el.value = match.value;
+      }
+      if (el.value !== value && !(el.value && parseFloat(el.value) === parseFloat(value))) {
+        el.value = prev;
+        LOAD_DROPPED.push(`${fieldInfo.id} = ${value} (not available in this builder)`);
+      }
+    }
+  } else {
+
+    el.value = value;
+  }
+}
+
+function applyStrategyLossModel(strategyBody, sweeps) {
+
+  const re = /'loss_model'\s*:\s*\{/;
+  const m = strategyBody.match(re);
+  if (!m) return;
+  const start = m.index + m[0].length;
+  let depth = 1;
+  let i = start;
+  while (i < strategyBody.length && depth > 0) {
+    if (strategyBody[i] === '{') depth++;
+    else if (strategyBody[i] === '}') depth--;
+    i++;
+  }
+  if (depth !== 0) return;
+  const lossBody = strategyBody.slice(start, i - 1);
+  const lossDict = parseDictBody(lossBody);
+  for (const key of Object.keys(lossDict)) {
+    const fieldInfo = LOSS_MODEL_KEY_TO_FIELD[key];
+    if (key === 'per_link_type') continue;
+    if (!fieldInfo) {
+
+      LOAD_DROPPED.push('strategy.loss_model.' + key);
+      console.warn('[config_builder] unmapped key, value NOT restored on load: '
+                   + 'strategy.loss_model.' + key);
+      continue;
+    }
+    const value = lossDict[key];
+    let toSet;
+    if (typeof value === 'object' && value.sweep) {
+      const arrStr = sweeps[value.varName];
+      if (arrStr === undefined) continue;
+      toSet = arrStr;
+    } else {
+      toSet = pythonValueToFieldString(value);
+    }
+    setFormField(fieldInfo, toSet);
+  }
+
+  if (lossDict.per_link_type) {
+    applyCompositePerLink(lossDict.per_link_type);
+  }
+}
+
+function applyHeader(text, filename) {
+
+  if (filename) {
+    $('filename').value = filename.replace(/\.py$/, '') + '.py';
+  }
+
+  let m = text.match(/^LOG_LEVEL\s*=\s*['"]([A-Z]+)['"]/m);
+  if (m) $('log_level').value = m[1];
+
+  m = text.match(/^PARALLEL_EXECUTION\s*=\s*(True|False)/m);
+  if (m) $('parallel').value = m[1];
+
+  m = text.match(/^N_PROCESSES\s*=\s*(\d+)/m);
+  if (m) $('n_processes').value = m[1];
+
+  m = text.match(/^DATA_COLLECTORS\s*=\s*\[(.+?)\]/m);
+  if (m) {
+    const items = m[1].split(',').map(s =>
+      s.trim().replace(/^['"]|['"]$/g, ''));
+    document.querySelectorAll('#collectors input[type=checkbox]').forEach(cb => {
+      cb.checked = items.includes(cb.value);
+    });
+  }
+
+  m = text.match(/experiment\['desc'\]\s*=\s*['"]([^'"]+)['"]/);
+  if (m) $('desc').value = m[1];
+}
+
+function resetFormToDefaults() {
+
+  document.querySelectorAll('.tab-panel input').forEach(el => {
+    if (el.type === 'checkbox' || el.type === 'radio') {
+      el.checked = el.defaultChecked;
+    } else {
+      el.value = el.defaultValue;
+    }
+  });
+
+  document.querySelectorAll('.tab-panel select').forEach(el => {
+    let defaultIdx = 0;
+    for (let i = 0; i < el.options.length; i++) {
+      if (el.options[i].defaultSelected) {
+        defaultIdx = i;
+        break;
+      }
+    }
+    el.selectedIndex = defaultIdx;
+  });
+}
+
+function loadConfig(text, filename) {
+
+  if (!text.includes('Generated by ICARUS-LEO config builder') &&
+      !text.includes('Generated by LEO-CDN config builder')) {
+    throw new Error('Not a builder-generated config (missing header)');
+  }
+
+  LOAD_DROPPED = [];
+  LOAD_IGNORED = [];
+
+  resetFormToDefaults();
+
+  applyHeader(text, filename);
+
+  const sweeps = parseSweepLists(text);
+
+  const sections = parseExperimentSections(text);
+
+  for (const sectionName of Object.keys(sections)) {
+    if (sectionName === 'desc') continue;
+    const body = sections[sectionName];
+    const dict = parseDictBody(body);
+    applySection(sectionName, dict, sweeps);
+
+    if (sectionName === 'strategy') {
+      applyStrategyLossModel(body, sweeps);
+    }
+  }
+
+  const dist = $('handover_blackout_distribution').value;
+  const ho_s = parseFloat($('handover_blackout_s').value);
+  const ho_max = parseFloat($('handover_blackout_max_s').value);
+
+  const topoDict = sections['topology'] ? parseDictBody(sections['topology']) : {};
+  const hasHoKeys = ('handover_source' in topoDict) || ('handover_period_s' in topoDict);
+  const isDisabled = !hasHoKeys && ((dist === 'fixed' && ho_s === 0) ||
+                     (dist === 'uniform' && ho_max === 0));
+  $('disable_handover').checked = isDisabled;
+
+  refresh();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => activateTab(t.dataset.tab));
+  });
+
+  populateCompositeSections();
+
+  document.querySelectorAll('input, select').forEach(el => {
+    el.addEventListener('input', refresh);
+    el.addEventListener('change', refresh);
+  });
+  $('btn_download').addEventListener('click', downloadConfig);
+
+  $('btn_load').addEventListener('click', () => $('load_file_input').click());
+  $('load_file_input').addEventListener('change', (ev) => {
+    const file = ev.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target.result;
+
+      $('load_preview').value = text;
+      try {
+        loadConfig(text, file.name);
+        if (LOAD_DROPPED.length) {
+          $('load_status').textContent = `Loaded: ${file.name}. WARNING: `
+            + `${LOAD_DROPPED.length} key(s) not restored: ${LOAD_DROPPED.join(', ')}. `
+            + `The regenerated config will differ from the file.`;
+          $('load_status').style.color = '#E65100';
+        } else {
+          $('load_status').textContent = `Loaded: ${file.name}`
+            + (LOAD_IGNORED.length ? ` (ignored, no effect or computed automatically: ${LOAD_IGNORED.join(', ')})` : '');
+          $('load_status').style.color = '#2E7D32';
+        }
+      } catch (err) {
+        $('load_status').textContent = `Error: ${err.message}`;
+        $('load_status').style.color = '#C62828';
+        console.error('Load error:', err);
+      }
+    };
+    reader.readAsText(file);
+
+    ev.target.value = '';
+  });
+
+  refresh();
+});
+</script>
+
+</body>
+</html>
