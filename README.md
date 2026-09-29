@@ -21,8 +21,6 @@ This repository provides documentation, worked examples and validation material:
   - [**User guide**](docs/ICARUS-LEO-UserGuide.md) — how to use the simulator. 
 - **Examples** — worked examples, each with the exact configuration and the
   resulting interactive session viewer.
-- **Validation Material** — the simulator's output
-  compared against independent analytical models, as reported in the paper.
 
 ## Accessing the simulator
 
