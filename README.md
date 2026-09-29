@@ -1,8 +1,5 @@
 # ICARUS-LEO
 
-🚧 **Work in Progress**
-This project is currently under active development.
-
 This repository accompanies the paper *"Understanding In-Network Caching for LEO
 Satellite Networks: A Physical-Layer Perspective"* by G. Campobello and M. Amadeo
 (submitted to Computer Networks, 2026). The paper investigates in-network
@@ -12,6 +9,7 @@ caching for LEO satellite networks from a physical-layer perspective and present
 constellations.
 
 
+
 ## Contents
 
 This repository provides documentation, worked examples and validation material:
@@ -19,9 +17,10 @@ This repository provides documentation, worked examples and validation material:
 - **Documents**
   - [**Architecture**](docs/ICARUS-LEO-Architecture.pdf) — what the simulator does and its architecture. 
   - [**User guide**](docs/ICARUS-LEO-UserGuide.md) — how to use the simulator. 
-- **Examples** — worked examples, each with the exact configuration and the
-  resulting interactive session viewer.
-
+- **[Examples](docs/examples/ABOUT.md)** — worked examples, each with the exact
+  configuration and the resulting interactive session viewer. The viewers open
+  in the browser at <https://gcampobello.github.io/ICARUS-LEO/>.
+  
 ## Accessing the simulator
 
 A web service that will let you run ICARUS-LEO online is under development. In the
@@ -32,6 +31,10 @@ an attachment, to the address below.
 
 Prof. G. Campobello, Department of Engineering, University of Messina, Italy.
 Email: [gcampobello@unime.it](mailto:gcampobello@unime.it)
+
+The configuration file can be prepared and downloaded at
+<https://gcampobello.github.io/ICARUS-LEO/>, where the config builder opens as a
+web page.
 
 Requests are reviewed individually and accepted where the computational effort
 involved is limited. In response, you will receive a link to download the output
