@@ -12,7 +12,7 @@ constellations.
 
 ## Contents
 
-This repository provides documentation, worked examples and validation material:
+This repository provides documentation and examples:
 
 - **Documents**
   - [**Architecture**](docs/ICARUS-LEO-Architecture.pdf) — what the simulator does and its architecture. 
