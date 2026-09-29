@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ICARUS-LEO</title>
+<style>
+  :root { --blue: #1565C0; --ink: #333; --muted: #666; --line: #e0e0e0; --bg: #f5f5f5; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+         background: var(--bg); color: var(--ink); line-height: 1.55; }
+  header { background: var(--blue); color: #fff; padding: 22px 20px; }
+  header h1 { font-size: 22px; font-weight: 600; }
+  header p { font-size: 13px; opacity: .9; margin-top: 4px; }
+  main { max-width: 760px; margin: 0 auto; padding: 24px 20px 48px; }
+  section { background: #fff; border: 1px solid var(--line); border-radius: 4px;
+            padding: 18px 20px; margin-bottom: 16px; }
+  h2 { font-size: 15px; font-weight: 600; color: var(--blue); margin-bottom: 8px; }
+  p { font-size: 14px; margin-bottom: 10px; }
+  p:last-child { margin-bottom: 0; }
+  ul { list-style: none; }
+  li { font-size: 14px; padding: 7px 0; border-bottom: 1px solid var(--line); }
+  li:last-child { border-bottom: 0; }
+  li span { color: var(--muted); }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  footer { font-size: 12px; color: var(--muted); text-align: center; padding: 0 20px 28px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ICARUS-LEO</h1>
+  <p>A simulator of in-network caching over LEO satellite constellations</p>
+</header>
+
+<main>
+
+<section>
+  <p>This site accompanies the paper <em>Understanding In-Network Caching for LEO
+  Satellite Networks: A Physical-Layer Perspective</em> by G. Campobello and
+  M. Amadeo. ICARUS-LEO extends the
+  <a href="https://github.com/icarus-sim/icarus">Icarus</a> in-network-caching
+  framework to content delivery over LEO satellite constellations.</p>
+  <p>The pages below are the interactive part of the material. The full
+  repository, with the documentation and the licence, is on
+  <a href="https://github.com/gcampobello/ICARUS-LEO">GitHub</a>.</p>
+</section>
+
+<section>
+  <h2>Prepare a simulation</h2>
+  <ul>
+    <li><a href="config_builder.html">Config builder</a>
+      <span>&mdash; describe your scenario and download the configuration file</span></li>
+    <li><a href="https://github.com/gcampobello/ICARUS-LEO/blob/main/docs/ICARUS-LEO-UserGuide.md">User guide</a>
+      <span>&mdash; how to fill it in, send it, and read what you receive back</span></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Worked examples</h2>
+  <p>Each example reproduces a result reported in the paper. The session viewer
+  shows the delivery of individual chunks, one at a time, with the events along
+  the path: cache or origin hits, losses, retransmissions and handover
+  interruptions.</p>
+  <ul>
+    <li><a href="examples/ex_cs1/viewer.html">Case study 1</a>
+      <span>&mdash; four caching strategies on a dynamic constellation with a lossy channel</span></li>
+    <li><a href="examples/ex_cs2/viewer.html">Case study 2</a>
+      <span>&mdash; a real burst-loss trace against a memoryless model, with and without retransmissions</span></li>
+  </ul>
+  <p>The configurations that produced them are in the repository, under
+  <a href="https://github.com/gcampobello/ICARUS-LEO/tree/main/docs/examples">docs/examples</a>.</p>
+</section>
+
+</main>
+
+<footer>
+  Documentation and text licensed under
+  <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+  Source code under GPL-2.0-or-later.
+</footer>
+
+</body>
+</html>
