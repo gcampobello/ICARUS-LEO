@@ -13,4 +13,4 @@ figures shown in the viewer can be checked against the paper itself.
 | Example | What it shows | Viewer |
 |---|---|---|
 | [`ex_cs1`](ex_cs1/) | Case Study 1: four caching strategies on a dynamic constellation with a lossy channel, seed 1. A single configuration with a parametric sweep | [open](https://gcampobello.github.io/ICARUS-LEO/examples/ex_cs1/viewer.html) |
-| [`ex_cs2`](ex_cs2/) | Case Study 2: a real burst-loss trace against a Bernoulli model at matched mean loss, LCD without retransmissions, seed 1 | [open](https://gcampobello.github.io/ICARUS-LEO/examples/ex_cs2/viewer.html) |
+| [`ex_cs2`](ex_cs2/) | Case Study 2: a real burst-loss trace against a Bernoulli model at matched mean loss, LCD with and without retransmissions, seed 1 | [open](https://gcampobello.github.io/ICARUS-LEO/examples/ex_cs2/viewer.html) |
