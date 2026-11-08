@@ -388,7 +388,7 @@ cabled links. Each link type has its own collapsible section with a
 
 **Traces provided.** The following trace is available on our server and can be
 used by writing its name in `trace_npz_path`. It is also published in the
-[`docs/traces/`](https://github.com/gcampobello/ICARUS-LEO/tree/main/docs/traces) folder
+[`docs/trace/`](https://github.com/gcampobello/ICARUS-LEO/tree/main/docs/trace) folder
 of the repository, together with its origin, licence and citation.
 
 | File | Description | Packets | Mean loss |
