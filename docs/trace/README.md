@@ -23,6 +23,12 @@ It was provided to us by T. Liu as a text file, one per-packet outcome per line
 We only converted it to the NumPy `.npz` format, to compress it and to match the
 input format of the simulator; the sequence of outcomes is unchanged.
 
+If you use it, please cite the paper above and the LENS dataset:
+
+> J. Zhao and J. Pan, "LENS: A LEO Satellite Network Measurement Dataset," in
+> *Proc. ACM Multimedia Systems Conference (MMSys '24)*, pp. 278–284, 2024,
+> doi:[10.1145/3625468.3652170](https://doi.org/10.1145/3625468.3652170).
+
 ## Format
 
 A `.npz` file with a single array, `data`, of type `uint8`: a one-dimensional
