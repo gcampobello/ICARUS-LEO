@@ -36,6 +36,7 @@ import numpy as np
 
 trace = np.load("LEO_downlink_loss-Ger0804-170001-1h.npz")["data"]
 print(trace.size, trace.sum(), trace.mean())   # 333176 1596 0.00479...
+```
 
 ## Licence and citation
 
