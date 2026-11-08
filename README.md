@@ -53,7 +53,7 @@ GitHub you can use the "Cite this repository" button.
   [Icarus](https://github.com/icarus-sim/icarus), which ICARUS-LEO extends.
 - The documentation and text are licensed under
   [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
-  - The loss trace in [`docs/trace/`](docs/trace/) is distributed under
+- The loss trace in [`docs/trace/`](docs/trace/) is distributed under
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), like the LENS
   dataset it is derived from; see [`docs/trace/README.md`](docs/trace/README.md)
   for its  origin and the works to cite.
