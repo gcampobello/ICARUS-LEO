@@ -55,4 +55,3 @@ and the LENS dataset:
 > J. Zhao and J. Pan, "LENS: A LEO Satellite Network Measurement Dataset," in
 > *Proc. ACM Multimedia Systems Conference (MMSys '24)*, pp. 278–284, 2024,
 > doi:[10.1145/3625468.3652170](https://doi.org/10.1145/3625468.3652170).
-````
