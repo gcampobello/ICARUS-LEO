@@ -23,12 +23,6 @@ It was provided to us by T. Liu as a text file, one per-packet outcome per line
 We only converted it to the NumPy `.npz` format, to compress it and to match the
 input format of the simulator; the sequence of outcomes is unchanged.
 
-If you use it, please cite the paper above and the LENS dataset:
-
-> J. Zhao and J. Pan, "LENS: A LEO Satellite Network Measurement Dataset," in
-> *Proc. ACM Multimedia Systems Conference (MMSys '24)*, pp. 278–284, 2024,
-> doi:[10.1145/3625468.3652170](https://doi.org/10.1145/3625468.3652170).
-
 ## Format
 
 A `.npz` file with a single array, `data`, of type `uint8`: a one-dimensional
@@ -42,3 +36,22 @@ import numpy as np
 
 trace = np.load("LEO_downlink_loss-Ger0804-170001-1h.npz")["data"]
 print(trace.size, trace.sum(), trace.mean())   # 333176 1596 0.00479...
+
+## Licence and citation
+
+Like the LENS dataset, this trace is distributed under the
+[Creative Commons Attribution-ShareAlike 4.0 International licence (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/).
+It is not covered by the licence of the software in this repository.
+
+If you use it, please cite the paper
+
+> T. Wang, T. Liu, Y. Li, J. Zhao, R. Gao, S. Wu and J. Pan, "Packet Loss
+> Modeling and Forward Erasure Correction for LEO Satellite Networks,"
+> *IEEE Transactions on Communications*, 2026.
+
+and the LENS dataset:
+
+> J. Zhao and J. Pan, "LENS: A LEO Satellite Network Measurement Dataset," in
+> *Proc. ACM Multimedia Systems Conference (MMSys '24)*, pp. 278–284, 2024,
+> doi:[10.1145/3625468.3652170](https://doi.org/10.1145/3625468.3652170).
+````
