@@ -380,7 +380,51 @@ cabled links. Each link type has its own collapsible section with a
 - `TRACE`: losses replayed from a recorded trace, a `.npz` file given in
   `trace_npz_path`, with an optional seed. Because the simulation runs on our
   server, the trace must be available there: give the name of one of the
-  traces we provide, or ask about using your own trace in your email.
+  traces we provide, or attach your own trace to your email. See
+  [Loss traces](#loss-traces) below for the traces provided and the required
+  format.
+  
+#### Loss traces
+
+**Traces provided.** The following trace is available on our server and can be
+used by writing its name in `trace_npz_path`. It is also published in the
+[`docs/traces/`](https://github.com/gcampobello/ICARUS-LEO/tree/main/docs/traces) folder
+of the repository, together with its origin, licence and citation.
+
+| File | Description | Packets | Mean loss |
+|---|---|---|---|
+| `LEO_downlink_loss-Ger0804-170001-1h.npz` | Starlink downlink, Germany, about one hour, rainy conditions; used in Case Study 2 of the paper | 333,176 | 0.48% |
+
+**Using your own trace.** Any binary loss trace can be used, however it was
+measured or generated, provided that it is in the following format:
+
+- a NumPy `.npz` file containing a one-dimensional, non-empty array of 0/1
+  values, one per packet: 1 means lost, 0 means received;
+- any integer or boolean data type;
+- if the file contains a single array, its name is free; if it contains more
+  than one, the array used is the first found among `B`, `data`, `losses` and
+  `trace`, in this order.
+
+For example, from a text file with one 0/1 value per line:
+
+```python
+import numpy as np
+
+losses = np.loadtxt("my_trace.txt").astype(np.uint8)   # 1 = lost, 0 = received
+np.savez_compressed("my_trace.npz", data=losses)
+```
+
+Attach the `.npz` file, zipped, to your email (see
+[9. Sending your request](#9-sending-your-request)), and write its file name in
+`trace_npz_path`.
+
+**How a trace is used.** A trace is a sequence of per-packet outcomes, not a
+function of time: timestamps, if any, are not used. Each link that uses the
+trace starts reading it from its own random offset, drawn from the `seed` of
+the `TRACE` sub-model, and every packet transmitted on that link consumes the
+next entry; at the end of the trace, reading continues from its beginning. The
+same seed therefore gives the same offsets and the same losses.
+
 
 ### 5.7 Collectors
 
@@ -476,7 +520,9 @@ In the message, please include:
   For the viewer, make sure `SESSION_LOG` is ticked in *Collectors*;
 - a sentence on the purpose of the simulations and your affiliation;
 - anything the builder cannot express, such as a parameter you would like to
-  vary that has no field, or a loss trace of your own.
+  vary that has no field;
+- your own loss trace, if you use one, zipped together with the configuration
+  file and in the format described in [Loss traces](#loss-traces).
 
 Please do not edit the generated file by hand. If something cannot be set in
 the builder, describe it in your message instead.
