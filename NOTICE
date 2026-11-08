@@ -12,8 +12,8 @@ Documentation and text
   (CC BY 4.0), https://creativecommons.org/licenses/by/4.0/.
 
 Data
-  The loss trace in traces/ (LEO_downlink_loss-Ger0804-170001-1h.npz) is a
-  Starlink downlink loss trace derived from the LENS dataset
+  The loss trace in docs/traces/ (LEO_downlink_loss-Ger0804-170001-1h.npz) is
+  a Starlink downlink loss trace derived from the LENS dataset
   (https://github.com/clarkzjw/LENS) by the authors of:
     T. Wang, T. Liu, Y. Li, J. Zhao, R. Gao, S. Wu and J. Pan, "Packet Loss
     Modeling and Forward Erasure Correction for LEO Satellite Networks",
@@ -25,7 +25,8 @@ Data
   unchanged.
   Like the LENS dataset, the trace is distributed under Creative Commons
   Attribution-ShareAlike 4.0 International (CC BY-SA 4.0),
-  https://creativecommons.org/licenses/by-sa/4.0/. If you use it, please cite
+  https://creativecommons.org/licenses/by-sa/4.0/. 
+  If you use it, please cite
   the paper above and the LENS dataset (J. Zhao and J. Pan, "LENS: A LEO
   Satellite Network Measurement Dataset", ACM MMSys 2024).
 
